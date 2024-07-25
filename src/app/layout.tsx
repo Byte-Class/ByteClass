@@ -6,6 +6,10 @@ import type { Metadata } from "next";
 import { Alegreya_Sans } from "next/font/google";
 import { cn } from "@/lib/utils";
 
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
+
 const fontSans = Alegreya_Sans({
   weight: ["400"],
   subsets: ["latin"],
@@ -24,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logos/byte.png" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

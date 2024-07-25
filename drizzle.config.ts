@@ -5,6 +5,6 @@ export default defineConfig({
   schema: "./src/db/scheme.ts",
   out: "./drizzle",
   dbCredentials: {
-    url: "postgres://dhruv:2563@127.0.0.1:5432/byteclass",
+    url: process.env.CONNECTION_URL_POSTGRES,
   },
 });
