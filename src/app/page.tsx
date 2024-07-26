@@ -19,6 +19,7 @@ export default async function Home() {
           <main className="w-full">
             <div className="w-4/5 ml-[10%] mr-[10%]">
               <h2>Testimonials</h2>
+              {/* Hello world */}
 
               <div className="w-full flex items-center justify-between gap-16">
                 <Testimonial
