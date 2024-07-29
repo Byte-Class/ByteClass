@@ -1,4 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuoteLeft, faQuoteRight } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   name: string;
@@ -8,16 +9,21 @@ interface Props {
 
 export default function Testimonial({ name, quote, image }: Props) {
   return (
-    <div>
-      <div></div>
-      <div></div>
+    <div className="relative flex min-h-64 flex-1 flex-col justify-between rounded-xl bg-lightBlack p-4">
+      <div className="absolute -top-6 left-6 flex h-12 w-12 items-center justify-center rounded-full bg-white text-3xl text-lightBlack">
+        <FontAwesomeIcon icon={faQuoteLeft} />
+      </div>
+      <div className="absolute -bottom-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white text-3xl text-lightBlack">
+        <FontAwesomeIcon icon={faQuoteRight} />
+      </div>
 
-      <Avatar>
-        <AvatarImage src={`/testimonials/${image}`} alt="@shadcn" sizes="" />
-        <AvatarFallback>{name}</AvatarFallback>
-      </Avatar>
+      <img
+        src={`/testimonials/${image}`}
+        className="absolute -top-12 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full"
+        alt="Nerds"
+      />
 
-      <p>{quote}</p>
+      <p className="mt-[15%] text-center">{quote}</p>
       <h3> - {name}</h3>
     </div>
   );
