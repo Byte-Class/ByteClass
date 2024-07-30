@@ -9,7 +9,7 @@ import { signIn } from "auth";
 export default function SignIn() {
   return (
     <main
-      className="h-lvh w-full bg-cover flex items-center justify-center"
+      className="flex h-lvh w-full items-center justify-center bg-cover"
       style={{ backgroundImage: "url('/signin-background.png')" }}
     >
       <form
@@ -17,7 +17,7 @@ export default function SignIn() {
           "use server";
           await signIn("google", { redirectTo: "/" });
         }}
-        className="w-[43%] h-[43%] bg-background rounded-2xl p-4 flex items-center justify-between flex-col border-solid border-4 border-[#262626]"
+        className="flex h-[43%] w-[43%] flex-col items-center justify-between rounded-2xl border-4 border-solid border-[#262626] bg-background p-4"
       >
         <Link href="/">
           <Image
@@ -30,12 +30,12 @@ export default function SignIn() {
         </Link>
         <Button
           type="submit"
-          className="w-4/5 font-bold flex items-center justify-start gap-4 rounded-3xl"
+          className="flex w-4/5 items-center justify-start gap-4 rounded-3xl font-bold"
         >
           <FontAwesomeIcon icon={faGoogle} /> Continue With Google
         </Button>
 
-        <p className="font-bold mr-auto">
+        <p className="mr-auto font-bold">
           <span className="text-red-600">*</span> Use your google account linked
           to your Google Classroom
         </p>
