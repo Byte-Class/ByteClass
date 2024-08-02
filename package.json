@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx ./src/drizzle/migrate.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.4.1",
