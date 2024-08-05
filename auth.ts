@@ -42,15 +42,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, account }) {
       if (account) {
         token.access_token = account.access_token;
+        token.refresh_token = account.refresh_token;
       }
       return token;
     },
-    async session({ session, token }) {
-      // @ts-ignore
-      session.access_token = token.access_token;
-      //@ts-ignore
+    async session({ session, token, user }) {
+      session.access_token = token.access_token as string;
+      session.refresh_token = token.refresh_token as string;
       session.role = ROLE_TYPES.USER;
       return session;
+    },
+
+    authorized({ request, auth }) {
+      const { pathname } = request.nextUrl;
+
+      if (pathname === "/tasks") {
+        return !!auth;
+      }
+
+      return true;
     },
   },
 });
