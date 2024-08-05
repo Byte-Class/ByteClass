@@ -15,9 +15,9 @@ export default function SignIn() {
       <form
         action={async () => {
           "use server";
-          await signIn("google", { redirectTo: "/" });
+          await signIn("google", { redirectTo: "/dashboard" });
         }}
-        className="flex h-[43%] w-[43%] flex-col items-center justify-between rounded-2xl border-4 border-solid border-[#262626] bg-background p-4"
+        className="flex h-[43%] w-[43%] flex-col items-center justify-between rounded-2xl border-4 border-solid border-lightBlack bg-darkBlack p-4"
       >
         <Link href="/">
           <Image
