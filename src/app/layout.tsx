@@ -33,8 +33,8 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          "bg-darkBlack min-h-screen font-sans antialiased",
+          fontSans.variable,
         )}
       >
         <ThemeProvider
