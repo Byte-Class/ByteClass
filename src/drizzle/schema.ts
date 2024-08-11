@@ -1,3 +1,4 @@
+import { TimestampFsp } from "drizzle-orm/mysql-core";
 import {
   boolean,
   timestamp,
@@ -5,6 +6,7 @@ import {
   text,
   primaryKey,
   integer,
+  json,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -84,3 +86,38 @@ export const authenticators = pgTable(
     }),
   }),
 );
+
+export const kamar = pgTable("kamar", {
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  loginCreds: json("loginCreds").$type<{
+    userName: string;
+    password: string;
+  }>(),
+});
+
+export const timeTable = pgTable("timetable", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});
+
+export const event = pgTable("event", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  timetableId: text("timetableId")
+    .notNull()
+    .references(() => timeTable.id, { onDelete: "cascade" }),
+  name: text("name"),
+  description: text("description"),
+  time: json("time").$type<{
+    start: string;
+    end: string;
+  }>(),
+  location: text("location"),
+});
