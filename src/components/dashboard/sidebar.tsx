@@ -14,7 +14,7 @@ export default function SideBar() {
       </Link>
       <Line className="ml-auto mr-4 w-3/4" />
 
-      <Link className="ml-12 text-2xl font-bold" href={"/dashboard/myfiles"}>
+      <Link className="ml-12 text-2xl font-bold" href={"/dashboard/my-files"}>
         My Files
       </Link>
       <Line className="ml-auto mr-4 w-3/4" />
