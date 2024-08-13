@@ -1,4 +1,3 @@
-import { TimestampFsp } from "drizzle-orm/mysql-core";
 import {
   boolean,
   timestamp,
@@ -113,7 +112,7 @@ export const event = pgTable("event", {
   timetableId: text("timetableId")
     .notNull()
     .references(() => timeTable.id, { onDelete: "cascade" }),
-  name: text("name"),
+  name: text("name").notNull(),
   description: text("description"),
   time: json("time").$type<{
     start: string;
