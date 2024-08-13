@@ -1,7 +1,5 @@
 "use client";
 
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,8 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { CourseList } from "@/core/types/interfaces";
-
-type Checked = DropdownMenuCheckboxItemProps["checked"];
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbTack } from "@fortawesome/free-solid-svg-icons";
 
 interface CourseDropDownFilter {
   id: string | null | undefined;
@@ -24,7 +22,6 @@ interface CourseDropDownFilter {
 }
 
 export default function ClassPicker({ courses }: { courses: CourseList[] }) {
-  const [showStatusBar, setShowStatusBar] = useState(false);
   const [courseChecked, setCourseChecked] = useState<CourseDropDownFilter[]>(
     courses.map((course, index) => {
       return {
@@ -44,13 +41,13 @@ export default function ClassPicker({ courses }: { courses: CourseList[] }) {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Classes</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {courseChecked.map((course, index) => {
+        {courseChecked.map((course: CourseDropDownFilter, index: number) => {
           return (
             <DropdownMenuCheckboxItem
               checked={courseChecked[index].checked}
               onCheckedChange={() => {
                 setCourseChecked((prev) => {
-                  const notItem = courseChecked.filter(
+                  const notItem = prev.filter(
                     (course_2) => course_2.id !== course.id,
                   );
 
@@ -67,6 +64,7 @@ export default function ClassPicker({ courses }: { courses: CourseList[] }) {
               }}
               key={crypto.randomUUID()}
             >
+              <FontAwesomeIcon icon={faThumbTack} className="mr-2" />
               {course.name}
             </DropdownMenuCheckboxItem>
           );
