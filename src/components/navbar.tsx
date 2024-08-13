@@ -1,11 +1,11 @@
-const greetingTime = require("greeting-time");
-
 import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "auth";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
+import BreadCrumbs from "@/components/breadcrumbs";
 
 export default async function Navbar() {
   const session = await auth();
@@ -32,15 +32,16 @@ export default async function Navbar() {
         <nav className="flex h-28 items-center justify-between bg-lightBlack p-8">
           <Avatar className="mr-6">
             {/* @ts-ignore */}
-            <AvatarImage src={session.user?.image} alt="@shadcn" />
+            <AvatarImage src={session.user?.image} alt="Your image " />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
-          <div className="mr-auto text-xl font-bold">
+          <div className="mr-auto flex flex-col gap-2 font-bold">
             <p>
-              {greetingTime(new Date())} {session.user?.name?.split(" ")[0]}
+              Good Morning {session.user?.name?.split(" ")[0]}, your next class
+              is Calculus
             </p>
-            <p>Your next class is Calculus</p>
+            <BreadCrumbs />
           </div>
           <form
             action={async () => {
