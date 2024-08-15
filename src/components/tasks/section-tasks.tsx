@@ -76,6 +76,7 @@ function ShowSectionTask({
   const badgesToDisplay = determineBadges({
     state: item.state,
     late: item.late,
+    dueDate: courseWork.dueDate,
   });
 
   return (

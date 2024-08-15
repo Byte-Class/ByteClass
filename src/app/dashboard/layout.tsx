@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata } from "next";
 
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import SideBar from "@/components/dashboard/sidebar";
 import Loading from "./loading";
 

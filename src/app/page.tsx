@@ -1,10 +1,19 @@
-import Navbar from "@/components/navbar";
+import { redirect } from "next/navigation";
+import { auth } from "auth";
+
+import Navbar from "@/components/navbar/navbar";
 import Splash from "@/components/splash";
 import Testimonial from "@/components/testimonial";
 import Line from "@/components/line";
 import Footer from "@/components/footer";
 
 export default async function Home() {
+  const session = await auth();
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
   return (
     <>
       <Navbar />

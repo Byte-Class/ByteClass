@@ -1,7 +1,5 @@
 import "./globals.css";
 
-import { ThemeProvider } from "@/components/theme-provider";
-
 import type { Metadata } from "next";
 import { Alegreya_Sans } from "next/font/google";
 import { cn } from "@/lib/utils";

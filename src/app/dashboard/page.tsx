@@ -4,8 +4,6 @@ import { google } from "googleapis";
 export default async function Dashboard() {
   const session = await auth();
 
-  console.log(session);
-
   if (session) {
     const oauth2Client = new google.auth.OAuth2(
       process.env.AUTH_GOOGLE_ID,
