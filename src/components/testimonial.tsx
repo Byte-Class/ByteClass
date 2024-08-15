@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuoteLeft, faQuoteRight } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 interface Props {
   name: string;
@@ -17,10 +18,12 @@ export default function Testimonial({ name, quote, image }: Props) {
         <FontAwesomeIcon icon={faQuoteRight} />
       </div>
 
-      <img
+      <Image
         src={`/testimonials/${image}`}
-        className="absolute -top-12 left-1/2 h-24 w-24 -translate-x-1/2 rounded-full"
+        className="absolute -top-12 left-1/2 -translate-x-1/2 rounded-full"
         alt="Nerds"
+        height={96}
+        width={96}
       />
 
       <p className="mt-[15%] text-center">{quote}</p>
