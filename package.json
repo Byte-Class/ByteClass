@@ -34,6 +34,7 @@
     "drizzle-orm": "^0.32.2",
     "googleapis": "^95.0.0",
     "greeting-time": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "next-auth": "5.0.0-beta.19",
     "next-themes": "^0.3.0",
@@ -45,6 +46,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.15",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
