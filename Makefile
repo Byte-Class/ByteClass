@@ -12,3 +12,6 @@ migrate_drop:
 	
 lint:
 	pnpm lint
+
+build:
+	pnpm build
