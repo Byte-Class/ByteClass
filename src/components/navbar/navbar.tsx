@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { auth, signOut } from "auth";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 import BreadCrumbs from "@/components/breadcrumbs";
 
@@ -31,16 +31,12 @@ export default async function Navbar() {
       ) : (
         <nav className="flex h-28 items-center justify-between bg-lightBlack p-8">
           <Avatar className="mr-6">
-            {/* @ts-ignore */}
-            <AvatarImage src={session.user?.image} alt="Your image " />
+            <AvatarImage alt="Your image " />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
           <div className="mr-auto flex flex-col gap-2 font-bold">
-            <p>
-              Good Morning {session.user?.name?.split(" ")[0]}, your next class
-              is Calculus
-            </p>
+            <p>Good Morning {"Dhruv"}, your next class is Calculus</p>
             <BreadCrumbs />
           </div>
           <form
