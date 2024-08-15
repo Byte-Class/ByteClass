@@ -1,3 +1,6 @@
+import { classroom_v1 } from "googleapis";
+import { format, getMonth } from "date-fns";
+
 const STATES = {
   new: "NEW",
   created: "CREATED",
@@ -9,6 +12,7 @@ const STATES = {
 interface DetermineBadgesArgs {
   state: string | null | undefined;
   late: boolean | undefined | null;
+  dueDate: classroom_v1.Schema$Date | undefined;
 }
 
 interface BadgesToDisplay {
@@ -20,6 +24,7 @@ interface BadgesToDisplay {
 function determineBadges({
   state,
   late,
+  dueDate,
 }: DetermineBadgesArgs): BadgesToDisplay[] {
   const badgesToDisplay: BadgesToDisplay[] = [];
 
@@ -48,6 +53,16 @@ function determineBadges({
   }
 
   if (late === true) {
+    if (dueDate && state === STATES.created) {
+      const month = format(new Date(2024, (dueDate.month || 0) - 1), "MMM");
+
+      badgesToDisplay.push({
+        badge: `Due: ${dueDate.day} ${month}`,
+        bgColour: "bg-red-800",
+        textColour: "text-white",
+      });
+    }
+
     badgesToDisplay.push({
       badge: "Late",
       bgColour: "bg-green-600",
