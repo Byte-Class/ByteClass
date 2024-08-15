@@ -17,8 +17,6 @@ export default function BreadCrumbs() {
   // Get's the pathname, but due to some things I can not control, I need to do this :(
   const pathname = usePathname().split("/").splice(2, 3)[0];
 
-  console.log(pathname);
-
   return (
     <Breadcrumb>
       <BreadcrumbList>
