@@ -10,6 +10,8 @@ import BreadCrumbs from "@/components/breadcrumbs";
 export default async function Navbar() {
   const session = await auth();
 
+  // console.log(session);
+
   return (
     <>
       {!session ? (
@@ -31,12 +33,15 @@ export default async function Navbar() {
       ) : (
         <nav className="flex h-28 items-center justify-between bg-lightBlack p-8">
           <Avatar className="mr-6">
-            <AvatarImage alt="Your image " />
+            <AvatarImage alt="Your image " src={session.user?.image ?? ""} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
           <div className="mr-auto flex flex-col gap-2 font-bold">
-            <p>Good Morning {"Dhruv"}, your next class is Calculus</p>
+            <p>
+              Good Morning {session.user?.name?.split(" ")[0]}, your next class
+              is Calculus
+            </p>
             <BreadCrumbs />
           </div>
           <form
