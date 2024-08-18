@@ -20,16 +20,19 @@ export default async function Tasks() {
     process.env.AUTH_GOOGLE_SECRET,
     process.env.GOOGLE_CALLBACK,
   );
+
   oauth2Client.setCredentials({
-    access_token: session.access_token,
-    refresh_token: session.refresh_token,
+    access_token: session.accessToken,
+    refresh_token: session.refreshToken,
   });
+
   google.options({
     auth: oauth2Client,
   });
 
-  // get all courses
   const classroom = google.classroom("v1");
+
+  // get all courses
   const allCourses = (
     await classroom.courses.list({
       courseStates: ["ACTIVE"],
