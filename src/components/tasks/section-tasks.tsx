@@ -6,7 +6,7 @@ import { PropsSectionTasks } from "@/core/types/interfaces";
 import Image from "next/image";
 import Line from "@/components/line";
 import { determineBadges } from "@/core/utils/determine-badges";
-import { cn } from "@/lib/utils";
+import { cn } from "@/core/lib/utils";
 
 export default async function SectionTasks({
   sectionHeader,
@@ -17,20 +17,6 @@ export default async function SectionTasks({
   if (!session) {
     return;
   }
-
-  // OAuth
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.AUTH_GOOGLE_ID,
-    process.env.AUTH_GOOGLE_SECRET,
-    process.env.GOOGLE_CALLBACK,
-  );
-  oauth2Client.setCredentials({
-    access_token: session.access_token,
-    refresh_token: session.refresh_token,
-  });
-  google.options({
-    auth: oauth2Client,
-  });
 
   const classroom = google.classroom("v1");
 
