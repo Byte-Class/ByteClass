@@ -15,6 +15,13 @@
       "when": 1723376399600,
       "tag": "0001_oval_cerebro",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1723967695939,
+      "tag": "0002_shocking_micromacro",
+      "breakpoints": true
     }
   ]
 }
