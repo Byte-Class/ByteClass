@@ -1,10 +1,8 @@
 import "../globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
-import { ThemeProvider } from "@/components/theme-provider";
-
 import { Alegreya_Sans } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { cn } from "@/core/lib/utils";
 import { Suspense } from "react";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata } from "next";
@@ -12,6 +10,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar/navbar";
 import SideBar from "@/components/dashboard/sidebar";
 import Loading from "./loading";
+import Provider from "../_providers";
 
 config.autoAddCss = false;
 
@@ -42,17 +41,19 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Navbar />
+        <Provider>
+          <Navbar />
 
-        <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
-          <SideBar />
+          <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
+            <SideBar />
 
-          <Suspense fallback={<Loading />}>
-            <div className="min-h-[calc(100lvh-7rem)] flex-grow p-8">
-              {children}
-            </div>
-          </Suspense>
-        </main>
+            <Suspense fallback={<Loading />}>
+              <div className="min-h-[calc(100lvh-7rem)] flex-grow p-8">
+                {children}
+              </div>
+            </Suspense>
+          </main>
+        </Provider>
       </body>
     </html>
   );

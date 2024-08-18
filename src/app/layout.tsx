@@ -2,7 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Alegreya_Sans } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { cn } from "@/core/lib/utils";
 
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
