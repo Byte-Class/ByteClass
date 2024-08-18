@@ -1,5 +1,16 @@
-import { db } from "@/drizzle/db";
+import TestComponent from "@/components/test";
+import { auth } from "auth";
+import { google } from "googleapis";
+import { SessionProvider } from "next-auth/react";
 
 export default async function Calendar() {
-  return <main>Calendar</main>;
+  const session = await auth();
+
+  return (
+    <main>
+      <SessionProvider session={session}>
+        <TestComponent />
+      </SessionProvider>
+    </main>
+  );
 }
