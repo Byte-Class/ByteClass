@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/core/lib/utils";
 
 export default function Line({ className }: { className?: string }) {
   return (
