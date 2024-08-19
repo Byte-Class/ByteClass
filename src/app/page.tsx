@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "auth";
 
@@ -6,6 +7,10 @@ import Splash from "@/components/splash";
 import Testimonial from "@/components/testimonial";
 import Line from "@/components/line";
 import Footer from "@/components/footer";
+
+export const metadata: Metadata = {
+  title: "Home | ByteClass",
+};
 
 export default async function Home() {
   const session = await auth();
