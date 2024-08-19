@@ -9,3 +9,9 @@ export interface PropsSectionTasks {
   sectionHeader: string;
   itemsToShow: classroom_v1.Schema$StudentSubmission[];
 }
+
+export interface Calendar {
+  id: string;
+  userId: string;
+  name: string;
+}
