@@ -4,6 +4,8 @@ import { requests } from "@/core/requests/axios";
 import { Calendar } from "@/core/types/interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+
+import { Skeleton } from "@/components/ui/skeleton";
 import CalendarCheckbox from "./calendar-checkbox";
 
 export default function ChoseCalendar() {
@@ -19,9 +21,44 @@ export default function ChoseCalendar() {
       }),
   });
 
+  if (isError) {
+    return (
+      <div>
+        <h2>oops</h2>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex w-full gap-2">
+          <Skeleton className="ml-4 h-[1rem] w-[1rem] rounded-sm" />
+          <Skeleton className="h-[1rem] flex-grow rounded-sm" />
+        </div>
+        <div className="flex w-full gap-2">
+          <Skeleton className="ml-4 h-[1rem] w-[1rem] rounded-sm" />
+          <Skeleton className="h-[1rem] flex-grow rounded-sm" />
+        </div>
+        <div className="flex w-full gap-2">
+          <Skeleton className="ml-4 h-[1rem] w-[1rem] rounded-sm" />
+          <Skeleton className="h-[1rem] flex-grow rounded-sm" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!data || !data.data) {
+    return (
+      <div className="flex flex-col gap-2">
+        <h2>No data {":("}</h2>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col gap-2">
-      {!data?.data ? (
+      {isLoading && <div>loading</div>}
+      {!data?.data || isError ? (
         <h2>Nothing to see here</h2>
       ) : (
         (data.data as Calendar[]).map((calendar) => (

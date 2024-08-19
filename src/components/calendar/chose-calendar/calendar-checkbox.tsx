@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CalendarCheckbox({ name, id }: Calendar) {
   return (
-    <div className="ml-4 flex w-[80%] items-center gap-2">
+    <div className="ml-4 flex items-center gap-2">
       <Checkbox />
       <label
         htmlFor="terms"
