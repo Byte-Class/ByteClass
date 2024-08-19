@@ -8,9 +8,11 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata } from "next";
 
 import Navbar from "@/components/navbar/navbar";
-import SideBar from "@/components/dashboard/sidebar";
 import Loading from "./loading";
 import Provider from "../_providers";
+import SideBarWrapper from "@/components/sidebar";
+import { auth } from "auth";
+import { SessionProvider } from "next-auth/react";
 
 config.autoAddCss = false;
 
@@ -25,11 +27,13 @@ export const metadata: Metadata = {
   description: "The dashboard for",
 };
 
-export default function RootLayout({
+export default async function OtherLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -45,7 +49,9 @@ export default function RootLayout({
           <Navbar />
 
           <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
-            <SideBar />
+            <SessionProvider session={session}>
+              <SideBarWrapper />
+            </SessionProvider>
 
             <Suspense fallback={<Loading />}>
               <div className="min-h-[calc(100lvh-7rem)] flex-grow p-8">
