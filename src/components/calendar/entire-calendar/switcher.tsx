@@ -1,6 +1,7 @@
+import { format } from "date-fns";
+
 import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { format } from "date-fns";
 
 export default function CalendarWeekSwitcher() {
   const month = format(new Date(), "MMMM");
