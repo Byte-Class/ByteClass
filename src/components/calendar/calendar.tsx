@@ -7,6 +7,7 @@ import CalendarWeekSwitcher from "@/components/calendar/entire-calendar/switcher
 import CalendarWeek from "@/components/calendar/entire-calendar/type/week";
 import { ATOM_CALENDAR_TYPE } from "@/core/atoms/atom";
 import CalendarMonth from "./entire-calendar/type/month";
+import CalendarModal from "./modal";
 
 export default function CalendarClient() {
   const session = useSession();
@@ -14,6 +15,9 @@ export default function CalendarClient() {
   return (
     <main className="w-full">
       <CalendarWeekSwitcher />
+
+      <CalendarModal />
+
       <DisplayCalendar />
     </main>
   );
