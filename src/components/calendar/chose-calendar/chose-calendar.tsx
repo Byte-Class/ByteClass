@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import CalendarCheckbox from "./calendar-checkbox";
+import { useSetAtom } from "jotai";
+import { ATOM_CALENDARS } from "@/core/atoms/atom";
 
 export default function ChoseCalendar() {
   const session = useSession();
@@ -20,6 +22,8 @@ export default function ChoseCalendar() {
         },
       }),
   });
+
+  const setCalendars = useSetAtom(ATOM_CALENDARS);
 
   if (isError) {
     return (
@@ -55,6 +59,9 @@ export default function ChoseCalendar() {
       </div>
     );
   }
+
+  setCalendars(data.data as Calendar[]);
+
   return (
     <div className="flex flex-col gap-2">
       {isLoading && <div>loading</div>}
