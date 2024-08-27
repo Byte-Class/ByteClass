@@ -6,7 +6,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useSetAtom } from "jotai";
 
-import { ATOM_CREATE_EVENT_MODEL } from "@/core/atoms/atom";
+import {
+  ATOM_CREATE_CALENDAR_MODEL,
+  ATOM_CREATE_EVENT_MODEL,
+} from "@/core/atoms/atom";
 
 import Line from "@/components/line";
 import ChoseCalendar from "@/components/calendar/chose-calendar/chose-calendar";
@@ -22,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function SideBarCalendar() {
+  const setCalendarModal = useSetAtom(ATOM_CREATE_CALENDAR_MODEL);
   const setEventModal = useSetAtom(ATOM_CREATE_EVENT_MODEL);
 
   return (
@@ -37,7 +41,13 @@ export default function SideBarCalendar() {
           <DropdownMenuLabel>Creations</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onToggle={() => alert("Create Calendar")}>
+            <DropdownMenuItem
+              onSelect={() => {
+                setTimeout(() => {
+                  setCalendarModal(true);
+                }, 150);
+              }}
+            >
               <FontAwesomeIcon icon={faCalendarDays} className="mr-2" />
               <span>Calendar</span>
             </DropdownMenuItem>
