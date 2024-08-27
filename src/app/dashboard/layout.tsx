@@ -1,18 +1,20 @@
 import "../globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
+import { SessionProvider } from "next-auth/react";
 import { Alegreya_Sans } from "next/font/google";
-import { cn } from "@/core/lib/utils";
 import { Suspense } from "react";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata } from "next";
+import { auth } from "auth";
+import { ToastContainer } from "react-toastify";
 
 import Navbar from "@/components/navbar/navbar";
-import Loading from "./loading";
-import Provider from "../_providers";
+import Loading from "@/app/dashboard/loading";
+import Provider from "@/app/_providers";
 import SideBarWrapper from "@/components/sidebar";
-import { auth } from "auth";
-import { SessionProvider } from "next-auth/react";
+import { cn } from "@/core/lib/utils";
 
 config.autoAddCss = false;
 
@@ -47,6 +49,7 @@ export default async function OtherLayout({
       >
         <Provider>
           <Navbar />
+          <ToastContainer theme="colored" />
 
           <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
             <SessionProvider session={session}>
