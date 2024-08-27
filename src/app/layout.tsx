@@ -1,6 +1,5 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
 import { Alegreya_Sans } from "next/font/google";
 import { cn } from "@/core/lib/utils";
 
