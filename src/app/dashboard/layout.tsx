@@ -49,7 +49,7 @@ export default async function OtherLayout({
       >
         <Provider>
           <Navbar />
-          <ToastContainer theme="colored" />
+          <ToastContainer theme="colored" pauseOnHover={false} />
 
           <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
             <SessionProvider session={session}>
