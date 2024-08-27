@@ -115,17 +115,7 @@ export const event = pgTable("event", {
     .references(() => timeTable.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   description: text("description"),
-  day: text("day")
-    .notNull()
-    .$type<
-      | "monday"
-      | "tuesday"
-      | "wednesday"
-      | "thursday"
-      | "friday"
-      | "saturday"
-      | "sunday"
-    >(),
+  day: text("day"),
   time: json("time").$type<{
     start: string;
     end: string;
