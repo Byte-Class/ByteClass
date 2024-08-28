@@ -14,7 +14,7 @@ export default function ChoseCalendar() {
   const session = useSession();
 
   const { isLoading, isError, data } = useQuery({
-    queryKey: ["/api", "/calendar", "/uuid"],
+    queryKey: ["/api", "/calendars", { param: "/uuid" }],
     queryFn: () =>
       requests.get(`/api/calendars/${session.data?.user?.id}`, {
         headers: {
