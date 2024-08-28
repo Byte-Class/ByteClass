@@ -14,4 +14,5 @@ export interface Calendar {
   id: string;
   userId: string;
   name: string;
+  checked: boolean;
 }
