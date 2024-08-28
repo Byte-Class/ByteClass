@@ -1,0 +1,1 @@
+ALTER TABLE "timetable" ADD COLUMN "description" text;
