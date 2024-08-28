@@ -43,6 +43,20 @@
       "when": 1724818975530,
       "tag": "0005_conscious_shard",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1724825732715,
+      "tag": "0006_harsh_nemesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1724825780331,
+      "tag": "0007_sticky_senator_kelly",
+      "breakpoints": true
     }
   ]
 }

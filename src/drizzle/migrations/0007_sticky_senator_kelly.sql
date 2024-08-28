@@ -1,0 +1,1 @@
+ALTER TABLE "timetable" ALTER COLUMN "checked" SET NOT NULL;

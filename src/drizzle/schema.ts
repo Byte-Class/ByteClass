@@ -105,6 +105,9 @@ export const timeTable = pgTable("timetable", {
     .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   description: text("description"),
+  checked: boolean("checked")
+    .$default(() => false)
+    .notNull(),
 });
 
 export const event = pgTable("event", {
