@@ -44,6 +44,7 @@ export default function SideBarCalendar() {
             <DropdownMenuItem
               onSelect={() => {
                 setTimeout(() => {
+                  setEventModal(false);
                   setCalendarModal(true);
                 }, 150);
               }}
@@ -54,6 +55,7 @@ export default function SideBarCalendar() {
             <DropdownMenuItem
               onSelect={() => {
                 setTimeout(() => {
+                  setCalendarModal(false);
                   setEventModal(true);
                 }, 150);
               }}
