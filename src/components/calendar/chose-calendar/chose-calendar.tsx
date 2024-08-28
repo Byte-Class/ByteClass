@@ -1,14 +1,15 @@
 "use client";
 
-import { requests } from "@/core/requests/axios";
-import { Calendar } from "@/core/types/interfaces";
+import { useSetAtom } from "jotai";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-import { Skeleton } from "@/components/ui/skeleton";
-import CalendarCheckbox from "./calendar-checkbox";
-import { useSetAtom } from "jotai";
+import { requests } from "@/core/requests/axios";
+import { Calendar } from "@/core/types/interfaces";
 import { ATOM_CALENDARS } from "@/core/atoms/atom";
+
+import CalendarCheckbox from "@/components/calendar/chose-calendar/calendar-checkbox";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ChoseCalendar() {
   const session = useSession();
@@ -64,6 +65,8 @@ export default function ChoseCalendar() {
 
   setCalendars(data.data as Calendar[]);
 
+  console.log(data.data);
+
   if ((data.data as Calendar[]).length === 0) {
     return (
       <div className="flex flex-col gap-2">
@@ -81,6 +84,7 @@ export default function ChoseCalendar() {
           name={calendar.name}
           id={calendar.id}
           userId={calendar.userId}
+          checked={calendar.checked}
           key={crypto.randomUUID()}
         />
       ))}
