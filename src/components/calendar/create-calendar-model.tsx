@@ -118,7 +118,7 @@ function FormModal() {
               <FormLabel>Calendar Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
+                  placeholder="Write a GOOD calendar description"
                   className="resize-none"
                   {...field}
                 />
