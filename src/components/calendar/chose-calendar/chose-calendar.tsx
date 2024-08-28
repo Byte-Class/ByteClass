@@ -52,31 +52,38 @@ export default function ChoseCalendar() {
     );
   }
 
-  if (!data || !data.data) {
+  if (!data || !data.data || isError) {
     return (
       <div className="flex flex-col gap-2">
-        <h2>No data {":("}</h2>
+        <h2>
+          You have NO calendars. MUCH LIKE THE NUMBER OF BITCHES YOU HAVE.
+        </h2>
       </div>
     );
   }
 
   setCalendars(data.data as Calendar[]);
 
+  if ((data.data as Calendar[]).length === 0) {
+    return (
+      <div className="flex flex-col gap-2">
+        <h2>
+          You have NO calendars. MUCH LIKE THE NUMBER OF BITCHES YOU HAVE.
+        </h2>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-2">
-      {isLoading && <div>loading</div>}
-      {!data?.data || isError ? (
-        <h2>Nothing to see here</h2>
-      ) : (
-        (data.data as Calendar[]).map((calendar) => (
-          <CalendarCheckbox
-            name={calendar.name}
-            id={calendar.id}
-            userId={calendar.userId}
-            key={crypto.randomUUID()}
-          />
-        ))
-      )}
+      {(data.data as Calendar[]).map((calendar) => (
+        <CalendarCheckbox
+          name={calendar.name}
+          id={calendar.id}
+          userId={calendar.userId}
+          key={crypto.randomUUID()}
+        />
+      ))}
     </div>
   );
 }
