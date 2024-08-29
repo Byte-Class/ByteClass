@@ -16,3 +16,8 @@ export interface Calendar {
   name: string;
   checked: boolean;
 }
+
+export interface CalendarsChecked {
+  id: string;
+  name: string;
+}
