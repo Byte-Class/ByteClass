@@ -10,8 +10,6 @@ import BreadCrumbs from "@/components/breadcrumbs";
 export default async function Navbar() {
   const session = await auth();
 
-  // console.log(session);
-
   return (
     <>
       {!session ? (
