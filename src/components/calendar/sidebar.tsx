@@ -32,7 +32,7 @@ export default function SideBarCalendar() {
     <div className="flex h-full min-h-[calc(100lvh-7rem)] w-80 flex-col bg-lightBlack p-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="flex justify-start gap-4">
+          <Button className="flex justify-start gap-2">
             <FontAwesomeIcon icon={faPlus} />
             Create
           </Button>
