@@ -37,33 +37,21 @@ export default async function OtherLayout({
   const session = await auth();
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/logos/byte.png" />
-      </head>
-      <body
-        className={cn(
-          "min-h-screen bg-darkBlack font-sans antialiased",
-          fontSans.variable,
-        )}
-      >
-        <Provider>
-          <Navbar />
-          <ToastContainer theme="colored" pauseOnHover={false} />
+    <Provider>
+      <Navbar />
+      <ToastContainer theme="colored" pauseOnHover={false} />
 
-          <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
-            <SessionProvider session={session}>
-              <SideBarWrapper />
-            </SessionProvider>
+      <main className="flex h-full min-h-[calc(100lvh-7rem)] items-start justify-center">
+        <SessionProvider session={session}>
+          <SideBarWrapper />
+        </SessionProvider>
 
-            <Suspense fallback={<Loading />}>
-              <div className="min-h-[calc(100lvh-7rem)] flex-grow p-8">
-                {children}
-              </div>
-            </Suspense>
-          </main>
-        </Provider>
-      </body>
-    </html>
+        <Suspense fallback={<Loading />}>
+          <div className="min-h-[calc(100lvh-7rem)] flex-grow p-8">
+            {children}
+          </div>
+        </Suspense>
+      </main>
+    </Provider>
   );
 }

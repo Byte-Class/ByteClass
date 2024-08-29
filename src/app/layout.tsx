@@ -1,10 +1,12 @@
 import "./globals.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
+import { config } from "@fortawesome/fontawesome-svg-core";
 import { Alegreya_Sans } from "next/font/google";
+import { Provider } from "jotai";
+
 import { cn } from "@/core/lib/utils";
 
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
 
 const fontSans = Alegreya_Sans({
@@ -29,7 +31,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
