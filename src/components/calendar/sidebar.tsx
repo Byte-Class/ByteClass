@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import Line from "@/components/line";
-import ChoseCalendar from "@/components/calendar/chose-calendar/chose-calendar";
+import ChoseCalendar from "@/components/calendar/chose-calendar/choose-calendar";
 import ModalManager from "@/components/calendar/entire-calendar/modal-manager";
 
 export default function SideBarCalendar() {
