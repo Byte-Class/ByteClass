@@ -15,7 +15,7 @@ import SideBarOther from "@/components/dashboard/sidebar";
 
 config.autoAddCss = false;
 
-export default async function OtherLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
