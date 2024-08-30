@@ -17,15 +17,10 @@ export default function CalendarWeekButtonSwitcher() {
   const getDate = useAtomValue(ATOM_CURRENT_DAY);
   const setNewDate = useSetAtom(ATOM_CURRENT_DAY);
 
-  const year = format(getDate, "uuuu");
-
   const dayInterval = eachDayOfInterval({
     start: startOfWeek(getDate),
     end: endOfWeek(getDate),
   });
-
-  const firstMonth = dayInterval[0];
-  const lastMonth = dayInterval[dayInterval.length - 1];
 
   return (
     <>
@@ -47,9 +42,9 @@ export default function CalendarWeekButtonSwitcher() {
 
       <h2 className="text-2xl font-bold">
         <DisplayMonth
-          firstMonth={firstMonth}
-          lastMonth={lastMonth}
-          year={year}
+          firstMonth={dayInterval[0]}
+          lastMonth={dayInterval[dayInterval.length - 1]}
+          year={format(getDate, "uuuu")}
         />
       </h2>
     </>
