@@ -12,7 +12,7 @@ import { ToastContainer } from "react-toastify";
 
 import Navbar from "@/components/navbar/navbar";
 import Loading from "@/app/dashboard/loading";
-import Provider from "@/app/_providers";
+import ReactQuery from "@/components/providers";
 import SideBarWrapper from "@/components/sidebar";
 import { cn } from "@/core/lib/utils";
 
@@ -37,7 +37,7 @@ export default async function OtherLayout({
   const session = await auth();
 
   return (
-    <Provider>
+    <ReactQuery>
       <Navbar />
       <ToastContainer theme="colored" pauseOnHover={false} />
 
@@ -52,6 +52,6 @@ export default async function OtherLayout({
           </div>
         </Suspense>
       </main>
-    </Provider>
+    </ReactQuery>
   );
 }

@@ -5,11 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 import { requests } from "@/core/requests/axios";
-import { Calendar } from "@/core/types/interfaces";
-import { ATOM_CALENDARS } from "@/core/atoms/atom";
+import { Calendar, CalendarsChecked } from "@/core/types/interfaces";
+import { ATOM_CALENDARS, ATOM_CHECKED_CALENDARS } from "@/core/atoms/atom";
 
 import CalendarCheckbox from "@/components/calendar/chose-calendar/calendar-checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect } from "react";
 
 export default function ChoseCalendar() {
   const session = useSession();
@@ -25,6 +26,19 @@ export default function ChoseCalendar() {
   });
 
   const setCalendars = useSetAtom(ATOM_CALENDARS);
+  const setCheckedCalendars = useSetAtom(ATOM_CHECKED_CALENDARS);
+
+  useEffect(() => {
+    if (data === undefined) {
+      return;
+    }
+
+    setCheckedCalendars(
+      (data.data as Calendar[]).map((item) => {
+        return { id: item.id, name: item.name };
+      }),
+    );
+  }, [data, setCheckedCalendars]);
 
   if (isError) {
     return (
@@ -63,10 +77,6 @@ export default function ChoseCalendar() {
     );
   }
 
-  setCalendars(data.data as Calendar[]);
-
-  console.log(data.data);
-
   if ((data.data as Calendar[]).length === 0) {
     return (
       <div className="flex flex-col gap-2">
@@ -76,6 +86,9 @@ export default function ChoseCalendar() {
       </div>
     );
   }
+
+  // Add all calendars to state
+  setCalendars(data.data as Calendar[]);
 
   return (
     <div className="flex flex-col gap-2">

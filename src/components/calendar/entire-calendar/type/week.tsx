@@ -4,16 +4,25 @@ import {
   endOfDay,
   endOfWeek,
   format,
+  formatISO,
   isToday,
   startOfDay,
   startOfWeek,
 } from "date-fns";
 import { useAtomValue } from "jotai";
+import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
 
-import { ATOM_CURRENT_DAY } from "@/core/atoms/atom";
+import { requests } from "@/core/requests/axios";
+import { ATOM_CHECKED_CALENDARS, ATOM_CURRENT_DAY } from "@/core/atoms/atom";
+import { useEffect } from "react";
+import { queryProvider } from "@/components/providers";
 
 export default function CalendarWeek() {
   const currentDate = useAtomValue(ATOM_CURRENT_DAY);
+  const getCheckedCalendars = useAtomValue(ATOM_CHECKED_CALENDARS);
+
+  const session = useSession();
 
   const firstDayOfWeek = startOfWeek(currentDate);
   const endDayOfWeek = endOfWeek(currentDate);
@@ -30,6 +39,26 @@ export default function CalendarWeek() {
     start: start,
     end: end,
   });
+
+  // const { data } = useQuery({
+  //   queryKey: ["/api", "/events", "/week"],
+  //   queryFn: () =>
+  //     requests.get("/api/events/week", {
+  //       params: {
+  //         providedDate: formatISO(currentDate),
+  //         calendar: getCheckedCalendars?.map((item) => item.id),
+  //       },
+  //       headers: {
+  //         session: session.data?.sessionToken,
+  //       },
+  //     }),
+  // });
+
+  // useEffect(() => {
+  //   queryProvider.invalidateQueries({
+  //     queryKey: ["/api", "/events", "/week"],
+  //   });
+  // }, [getCheckedCalendars]);
 
   return (
     <>

@@ -1,3 +1,5 @@
+"use client";
+
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -7,7 +9,7 @@ import { z } from "zod";
 import { useSession } from "next-auth/react";
 
 import { ATOM_CREATE_CALENDAR_MODEL } from "@/core/atoms/atom";
-import { queryProvider } from "@/app/_providers";
+import { queryProvider } from "@/components/providers";
 
 import {
   Form,

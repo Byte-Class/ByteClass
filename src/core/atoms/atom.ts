@@ -10,3 +10,7 @@ export const ATOM_CREATE_EVENT_MODEL = atom<boolean>(false);
 export const ATOM_CREATE_CALENDAR_MODEL = atom<boolean>(false);
 
 export const ATOM_CALENDARS = atom<Calendar[] | undefined>(undefined);
+
+export const ATOM_CHECKED_CALENDARS = atom<CalendarsChecked[] | undefined>(
+  undefined,
+);

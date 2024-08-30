@@ -3,7 +3,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { Alegreya_Sans } from "next/font/google";
-import { Provider } from "jotai";
+import Providers from "@/components/providers";
 
 import { cn } from "@/core/lib/utils";
 
@@ -31,7 +31,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Provider>{children}</Provider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

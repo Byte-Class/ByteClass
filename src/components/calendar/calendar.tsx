@@ -1,9 +1,6 @@
-"use client";
-
-import { useSession } from "next-auth/react";
 import { useAtomValue } from "jotai";
 
-import { ATOM_CALENDAR_TYPE } from "@/core/atoms/atom";
+import { ATOM_CALENDAR_TYPE, ATOM_CHECKED_CALENDARS } from "@/core/atoms/atom";
 
 import CalendarWeekSwitcher from "@/components/calendar/entire-calendar/switcher";
 import CalendarWeek from "@/components/calendar/entire-calendar/type/week";
@@ -12,8 +9,6 @@ import CreateEventModal from "@/components/calendar/create-event-modal";
 import CreateCalendarModal from "@/components/calendar/create-calendar-model";
 
 export default function CalendarClient() {
-  const session = useSession();
-
   return (
     <main className="w-full">
       <CalendarWeekSwitcher />
@@ -28,6 +23,7 @@ export default function CalendarClient() {
 
 function DisplayCalendar() {
   const calendarType = useAtomValue(ATOM_CALENDAR_TYPE);
+  const getCalendarCheck = useAtomValue(ATOM_CHECKED_CALENDARS);
 
   if (calendarType === "month") {
     return <CalendarMonth />;
