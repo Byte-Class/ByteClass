@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useAtomValue } from "jotai";
+"use client";
+
 import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -9,11 +9,9 @@ import { queryProvider } from "@/components/providers";
 import type { Calendar } from "@/core/types/interfaces";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { ATOM_CHECKED_CALENDARS } from "@/core/atoms/atom";
 
 export default function CalendarCheckbox({ name, id, checked }: Calendar) {
   const session = useSession();
-  const getCheckedCalendars = useAtomValue(ATOM_CHECKED_CALENDARS);
 
   const toggleCalendar = useMutation({
     mutationFn: () =>
