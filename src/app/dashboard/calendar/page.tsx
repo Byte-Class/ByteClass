@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "auth";
-import { Metadata } from "next";
 
 import CalendarWeekSwitcher from "@/components/calendar/entire-calendar/switcher";
 import CreateEventModal from "@/components/calendar/create-event-modal";
@@ -10,6 +10,8 @@ import DisplayCalendar from "@/components/calendar/display-calendar";
 export const metadata: Metadata = {
   title: "Calendar | Byte Class",
 };
+
+export const dynamic = "force-dynamic";
 
 export default async function Calendar() {
   const session = await auth();

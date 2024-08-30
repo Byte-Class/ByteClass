@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { auth } from "auth";
 import { google } from "googleapis";
 
@@ -6,6 +7,11 @@ import { CourseList } from "@/core/types/interfaces";
 import ClassPicker from "@/components/tasks/class-picker";
 import PinnedClasses from "@/components/tasks/pinned-classes";
 import SectionTasks from "@/components/tasks/section-tasks";
+import SideBarOther from "@/components/dashboard/sidebar";
+
+export const metadata: Metadata = {
+  title: "Tasks | Byte Class",
+};
 
 export default async function Tasks() {
   const session = await auth();
@@ -83,27 +89,34 @@ export default async function Tasks() {
   }
 
   return (
-    <>
-      <h2 className="text-5xl font-bold">Your Tasks</h2>
+    <main className="flex h-[calc(100lvh-7rem)] gap-4">
+      <SideBarOther />
 
-      <div className="mt-4 flex w-full gap-4">
-        <ClassPicker courses={courses} />
+      <div className="flex-grow">
+        <h2 className="text-5xl font-bold">Your Tasks</h2>
 
-        <PinnedClasses />
+        <div className="mt-4 flex w-full gap-4">
+          <ClassPicker courses={courses} />
+
+          <PinnedClasses />
+        </div>
+
+        <div className="ml-auto mr-auto mt-4 w-11/12">
+          <SectionTasks
+            sectionHeader="Overdue"
+            itemsToShow={courseWorkOverdue}
+          />
+
+          <SectionTasks
+            sectionHeader="Returned"
+            itemsToShow={courseWorkReclaimedReturned}
+          />
+          <SectionTasks
+            sectionHeader="Handed In"
+            itemsToShow={courseWorksTurnedIn}
+          />
+        </div>
       </div>
-
-      <div className="ml-auto mr-auto mt-4 w-11/12">
-        <SectionTasks sectionHeader="Overdue" itemsToShow={courseWorkOverdue} />
-
-        <SectionTasks
-          sectionHeader="Returned"
-          itemsToShow={courseWorkReclaimedReturned}
-        />
-        <SectionTasks
-          sectionHeader="Handed In"
-          itemsToShow={courseWorksTurnedIn}
-        />
-      </div>
-    </>
+    </main>
   );
 }
