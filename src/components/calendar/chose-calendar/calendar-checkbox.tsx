@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 import { requests } from "@/core/requests/axios";
 import { queryProvider } from "@/components/providers";
@@ -12,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CalendarCheckbox({ name, id, checked }: Calendar) {
   const session = useSession();
+  const router = useRouter();
 
   const toggleCalendar = useMutation({
     mutationFn: () =>
@@ -25,9 +27,7 @@ export default function CalendarCheckbox({ name, id, checked }: Calendar) {
     },
     onSuccess: () => {
       // Invalid cache for old fetchAllCalendars Query
-      queryProvider.invalidateQueries({
-        queryKey: ["/api", "/calendars", { param: "/uuid" }],
-      });
+      router.refresh();
     },
   });
 
