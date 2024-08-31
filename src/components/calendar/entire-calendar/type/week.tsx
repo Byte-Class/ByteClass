@@ -1,127 +1,63 @@
-import {
-  eachDayOfInterval,
-  eachHourOfInterval,
-  endOfDay,
-  endOfWeek,
-  format,
-  formatISO,
-  isToday,
-  startOfDay,
-  startOfWeek,
-} from "date-fns";
-import { useAtomValue } from "jotai";
-import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { and, eq } from "drizzle-orm";
+import { auth } from "auth";
 
-import { requests } from "@/core/requests/axios";
-import { ATOM_CHECKED_CALENDARS, ATOM_CURRENT_DAY } from "@/core/atoms/atom";
-import { useEffect } from "react";
-import { queryProvider } from "@/components/providers";
+import { db } from "@/drizzle/db";
+import { event, timeTable } from "@/drizzle/schema";
+import type { EventsType } from "@/core/types/interfaces";
 
-export default function CalendarWeek() {
-  const currentDate = useAtomValue(ATOM_CURRENT_DAY);
-  const getCheckedCalendars = useAtomValue(ATOM_CHECKED_CALENDARS);
+import DisplayDaysWeekCalendar from "@/components/calendar/entire-calendar/type/week/display-days";
+import DisplayEventsWeekCalendar from "@/components/calendar/entire-calendar/type/week/display-events";
+import DisplayTimesWeekCalendar from "@/components/calendar/entire-calendar/type/week/display-times";
 
-  const session = useSession();
+export default async function CalendarWeek() {
+  const session = await auth();
 
-  const firstDayOfWeek = startOfWeek(currentDate);
-  const endDayOfWeek = endOfWeek(currentDate);
+  // multiple queries necessary, since first we need to fetch the tables that the user has checked
+  const tables = await db
+    .select()
+    .from(timeTable)
+    .where(
+      and(
+        eq(timeTable.checked, true),
+        eq(timeTable.userId, session?.user?.id as string),
+      ),
+    );
 
-  const start = startOfDay(currentDate);
-  const end = endOfDay(currentDate);
+  const tableIds = tables.map((table) => table.id);
 
-  const daysInWeek = eachDayOfInterval({
-    start: firstDayOfWeek,
-    end: endDayOfWeek,
-  });
+  const events: EventsType[][] = [];
 
-  const timesInDay = eachHourOfInterval({
-    start: start,
-    end: end,
-  });
+  for (let i = 0; i < tableIds.length; i++) {
+    const res = await db
+      .select()
+      .from(event)
+      .where(eq(event.timetableId, tableIds[i]));
 
-  // const { data } = useQuery({
-  //   queryKey: ["/api", "/events", "/week"],
-  //   queryFn: () =>
-  //     requests.get("/api/events/week", {
-  //       params: {
-  //         providedDate: formatISO(currentDate),
-  //         calendar: getCheckedCalendars?.map((item) => item.id),
-  //       },
-  //       headers: {
-  //         session: session.data?.sessionToken,
-  //       },
-  //     }),
-  // });
-
-  // useEffect(() => {
-  //   queryProvider.invalidateQueries({
-  //     queryKey: ["/api", "/events", "/week"],
-  //   });
-  // }, [getCheckedCalendars]);
+    events.push(res);
+  }
 
   return (
-    <>
-      <main className="flex w-full">
-        <div className="mt-4 w-16 text-xs font-bold text-gray-400">
-          <div className="flex h-20 w-full items-end">
-            <p>{format(new Date(), "O")}</p>
-          </div>
-          <div className="w-16">
-            {timesInDay.map((time) => {
-              return (
-                <div
-                  key={crypto.randomUUID()}
-                  className="relative flex aspect-square w-full items-center justify-center"
-                >
-                  <p>
-                    {format(time, "h")} {format(time, "a")}
-                  </p>
-                  <div className="absolute left-16 h-[0.5px] w-screen bg-gray-400"></div>
-                </div>
-              );
-            })}
-          </div>
+    <div className="w-full">
+      <div className="flex w-full">
+        <div className="flex h-20 w-16 items-end text-xs font-bold text-gray-400">
+          <p>{format(new Date(), "O")}</p>
         </div>
 
-        <div className="w-[calc(100% - 4rem)] mt-4 flex-grow">
-          <div className="flex">
-            {daysInWeek.map((day) => {
-              return (
-                <div
-                  className="flex h-20 flex-1 flex-col items-center justify-center"
-                  key={crypto.randomUUID()}
-                >
-                  <h2 className="text-xl font-bold">{format(day, "EEEE")}</h2>
-
-                  {isToday(day) ? (
-                    <h2 className="aspect-square rounded-full bg-blue-700 p-2 text-center text-xl font-bold">
-                      {format(day, "dd")}
-                    </h2>
-                  ) : (
-                    <h2 className="aspect-square rounded-full p-2 text-xl font-bold">
-                      {format(day, "dd")}
-                    </h2>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="flex">
-            {daysInWeek.map((day) => {
-              return (
-                <div
-                  className="h-[1536px] flex-1 border-r-2 border-solid border-gray-400 first:border-l-2"
-                  key={crypto.randomUUID()}
-                >
-                  <h2 className="text-xl font-bold">A COLUMN</h2>
-                </div>
-              );
-            })}
-          </div>
+        <div className="flex flex-grow">
+          <DisplayDaysWeekCalendar />
         </div>
-      </main>
-    </>
+      </div>
+
+      <div className="flex h-[calc(100vh-18.5rem)] w-full overflow-y-scroll">
+        <div className="w-16 text-xs font-bold text-gray-400">
+          <DisplayTimesWeekCalendar />
+        </div>
+
+        <div className="flex flex-grow">
+          <DisplayEventsWeekCalendar events={events} />
+        </div>
+      </div>
+    </div>
   );
 }
