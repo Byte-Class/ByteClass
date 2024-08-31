@@ -1,21 +1,21 @@
 "use client";
 
+import { Children, ReactNode } from "react";
 import { useAtomValue } from "jotai";
 
 import { ATOM_CALENDAR_TYPE } from "@/core/atoms/atom";
 
-import CalendarWeek from "@/components/calendar/entire-calendar/type/week";
-import CalendarMonth from "@/components/calendar/entire-calendar/type/month";
-
-export default function DisplayCalendar() {
+export default function DisplayCalendar({ children }: { children: ReactNode }) {
   const calendarType = useAtomValue(ATOM_CALENDAR_TYPE);
 
+  const calendars = Children.toArray(children);
+
   if (calendarType === "month") {
-    return <CalendarMonth />;
+    return <>{calendars[0]}</>;
   }
 
   if (calendarType === "week") {
-    return <CalendarWeek />;
+    return <>{calendars[1]}</>;
   }
 
   if (calendarType === "day") {
