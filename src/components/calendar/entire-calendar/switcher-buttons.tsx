@@ -37,7 +37,7 @@ export default function CalendarWeekButtonSwitcher() {
           setNewDate(addDays(getDate, 7));
         }}
       >
-        Prev
+        Next
       </Button>
 
       <h2 className="text-2xl font-bold">
