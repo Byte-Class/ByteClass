@@ -50,15 +50,20 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
+import { CalendarsType } from "@/core/types/interfaces";
 
-export default function CreateEventModal() {
+export default function CreateEventModalForm({
+  calendars,
+}: {
+  calendars: CalendarsType[];
+}) {
   const getEventModal = useAtomValue(ATOM_CREATE_EVENT_MODEL);
 
   return (
     <>
       {getEventModal && (
         <div className="absolute left-1/2 top-1/2 z-10 flex w-[1000px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-black p-4">
-          <FormModal />
+          <FormModal calendars={calendars} />
         </div>
       )}
     </>
@@ -82,9 +87,8 @@ const times = eachMinuteOfInterval({
   end: endOfDay(new Date()),
 });
 
-function FormModal() {
+function FormModal({ calendars }: { calendars: CalendarsType[] }) {
   const setModal = useSetAtom(ATOM_CREATE_EVENT_MODEL);
-  const getCalendars = useAtomValue(ATOM_CALENDARS);
 
   const session = useSession();
 
@@ -141,10 +145,6 @@ function FormModal() {
     createEvent.mutate({
       ...data,
     });
-  }
-
-  if (!getCalendars) {
-    return <h2>Loading...</h2>;
   }
 
   return (
@@ -204,9 +204,6 @@ function FormModal() {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
                       initialFocus
                     />
                   </PopoverContent>
@@ -412,7 +409,7 @@ function FormModal() {
                       )}
                     >
                       {field.value
-                        ? getCalendars.find((calendar) => {
+                        ? calendars.find((calendar) => {
                             return calendar.id === field.value;
                           })?.name
                         : "Select Calendar"}
@@ -429,7 +426,7 @@ function FormModal() {
                     <CommandList>
                       <CommandEmpty>No Calendars Found</CommandEmpty>
                       <CommandGroup>
-                        {getCalendars.map((calendar) => (
+                        {calendars.map((calendar) => (
                           <CommandItem
                             value={calendar.name}
                             key={calendar.id}
