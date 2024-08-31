@@ -26,7 +26,9 @@ export interface CalendarsChecked {
   name: string;
 }
 
-const eventSchema = createSelectSchema(event);
+const eventSchema = createSelectSchema(event, {
+  time: z.object({ start: z.string(), end: z.string() }),
+});
 export type EventsType = z.infer<typeof eventSchema>;
 
 const calendarSchema = createSelectSchema(timeTable);
