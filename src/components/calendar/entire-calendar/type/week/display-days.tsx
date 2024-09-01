@@ -6,6 +6,7 @@ import {
   endOfWeek,
   format,
   isToday,
+  getDay,
 } from "date-fns";
 import { useAtomValue } from "jotai";
 
@@ -33,8 +34,12 @@ export default function DisplayDaysWeekCalendar() {
               <h2 className="aspect-square rounded-full bg-blue-700 p-2 text-center text-xl font-bold">
                 {format(day, "dd")}
               </h2>
+            ) : getDay(currentDate) === getDay(day) ? (
+              <h2 className="aspect-square rounded-full bg-blue-300 p-2 text-center text-xl font-bold">
+                {format(day, "dd")}
+              </h2>
             ) : (
-              <h2 className="aspect-square rounded-full p-2 text-xl font-bold">
+              <h2 className="aspect-square rounded-full bg-transparent p-2 text-center text-xl font-bold">
                 {format(day, "dd")}
               </h2>
             )}
