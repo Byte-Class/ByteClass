@@ -125,4 +125,5 @@ export const event = pgTable("event", {
     end: string;
   }>(),
   location: text("location"),
+  colour: text("colour"),
 });
