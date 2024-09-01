@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import { ATOM_CREATE_CALENDAR_MODEL } from "@/core/atoms/atom";
 import { queryProvider } from "@/components/providers";
@@ -62,6 +63,7 @@ function FormModal() {
   const setCalendarModal = useSetAtom(ATOM_CREATE_CALENDAR_MODEL);
 
   const session = useSession();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,12 +90,7 @@ function FormModal() {
     },
     onSuccess() {
       toast.success("Successfully Created Calender");
-
-      // TODO: Invalidate old fetched calendars
-      queryProvider.invalidateQueries({
-        queryKey: ["/api", "/calendars", { param: "/uuid" }],
-      });
-
+      router.refresh();
       form.reset();
     },
   });

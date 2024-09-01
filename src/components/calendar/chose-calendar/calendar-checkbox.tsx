@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 import { requests } from "@/core/requests/axios";
-import { queryProvider } from "@/components/providers";
 import type { Calendar } from "@/core/types/interfaces";
 
 import { Checkbox } from "@/components/ui/checkbox";

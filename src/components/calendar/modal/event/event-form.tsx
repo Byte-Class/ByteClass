@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/core/lib/utils";
 import { requests } from "@/core/requests/axios";
@@ -105,6 +106,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
   const setModal = useSetAtom(ATOM_CREATE_EVENT_MODEL);
 
   const session = useSession();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -145,6 +147,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
     },
     onSuccess: () => {
       toast.success("Successfully Created Event");
+      router.refresh();
       form.reset();
     },
   });
@@ -387,6 +390,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
           )}
         />
 
+        {/* description */}
         <FormField
           control={form.control}
           name="description"
