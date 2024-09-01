@@ -95,12 +95,24 @@ const formSchema = z.object({
   end: z.date(),
   location: z.string(),
   calendar: z.string(),
+  colour: z.string({
+    required_error: "Please select a Colour.",
+  }),
 });
 
 const times = eachMinuteOfInterval({
   start: startOfDay(new Date()),
   end: endOfDay(new Date()),
 });
+
+const colours = [
+  { label: "Red", value: "F02D3A" },
+  { label: "Orange", value: "FF964F" },
+  { label: "Yellow", value: "F0D975" },
+  { label: "Green", value: "57BD57" },
+  { label: "Blue", value: "6FA8D6" },
+  { label: "Purple", value: "A185D6" },
+] as const;
 
 function FormModal({ calendars }: { calendars: CalendarsType[] }) {
   const setModal = useSetAtom(ATOM_CREATE_EVENT_MODEL);
@@ -126,6 +138,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
       from,
       end,
       calendar,
+      colour,
     }: z.infer<typeof formSchema>) => {
       return requests.post(
         "/api/events",
@@ -137,6 +150,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
           start: formatISO(from),
           end: formatISO(end),
           calendarId: calendar,
+          colour,
         },
         {
           headers: {
@@ -402,6 +416,78 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
               </FormControl>
               <FormDescription>
                 This is the description for your event
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Colour */}
+        <FormField
+          control={form.control}
+          name="colour"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Colours</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
+                      {field.value
+                        ? colours.find((colour) => colour.value === field.value)
+                            ?.label
+                        : "Select Colour"}
+                      <FontAwesomeIcon
+                        icon={faCaretDown}
+                        className="ml-2 h-4 w-4 shrink-0 opacity-50"
+                      />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search language..." />
+                    <CommandList>
+                      <CommandEmpty>No colour found.</CommandEmpty>
+                      <CommandGroup>
+                        {colours.map((colour) => (
+                          <CommandItem
+                            value={colour.label}
+                            key={colour.value}
+                            onSelect={() => {
+                              form.setValue("colour", colour.value);
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCheck}
+                              className={cn(
+                                "mr-2 text-base text-white",
+                                colour.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {colour.label}
+                            <div
+                              className="ml-2 h-4 w-4 rounded-full"
+                              style={{ backgroundColor: `#${colour.value}` }}
+                            ></div>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                This is the colour that will be used in the calendar.
               </FormDescription>
               <FormMessage />
             </FormItem>
