@@ -16,8 +16,7 @@ import { useAtomValue } from "jotai";
 import { ATOM_CURRENT_DAY } from "@/core/atoms/atom";
 import type { EventsType } from "@/core/types/interfaces";
 import { convertPxToRem } from "@/core/utils/convert-to-rem";
-import { cn } from "@/core/lib/utils";
-import clsx from "clsx";
+import { formatDate } from "@/core/utils/format-date-event";
 
 type DayOfWeek =
   | "sunday"
@@ -185,13 +184,14 @@ function Event({ event }: { event: EventsType }) {
 
   return (
     <div
-      className="absolute flex w-full rounded-lg bg-blue-400 p-2"
+      className="absolute flex w-full flex-col rounded-lg border-l-[6px] border-blue-900 bg-blue-400 p-2"
       style={{
         top: `${topValue}rem`,
         height: `${height}rem`,
       }}
     >
-      {event.name}
+      <p className="font-bold">{event.name}</p>
+      <p>{formatDate(start, end)}</p>
     </div>
   );
 }
