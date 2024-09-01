@@ -19,23 +19,23 @@ export default function CalendarMonth() {
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-7">
-        {daysInMonth.map((month) => {
+      <div className="mt-4 grid h-full grid-cols-7">
+        {daysInMonth.map((day) => {
           return (
             <div className="text-center" key={crypto.randomUUID()}>
-              <div className="flex flex-col items-center justify-center">
-                <h2 className="text-xl font-bold">{format(month, "EEEE")}</h2>
-
-                {isToday(month) ? (
-                  <h2 className="aspect-square rounded-full bg-blue-700 p-2 text-xl font-bold">
-                    {format(month, "dd")}
+              {isToday(day) ? (
+                <div className="bg-white text-black">
+                  <h2 className="rounded-full bg-white p-2 text-xl font-bold">
+                    {format(day, "dd")}
                   </h2>
-                ) : (
-                  <h2 className="aspect-square rounded-full p-2 text-xl font-bold">
-                    {format(month, "dd")}
+                </div>
+              ) : (
+                <div className="">
+                  <h2 className="rounded-full p-2 text-xl font-bold">
+                    {format(day, "dd")}
                   </h2>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           );
         })}
