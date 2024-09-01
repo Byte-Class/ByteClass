@@ -15,8 +15,6 @@ export default async function CreateEventModal() {
     .from(timeTable)
     .where(eq(timeTable.userId, session?.user?.id as string));
 
-  console.log(calendars);
-
   return (
     <SessionProvider session={session}>
       <CreateEventModalForm calendars={calendars} />

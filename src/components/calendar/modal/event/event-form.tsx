@@ -21,11 +21,12 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 
 import { cn } from "@/core/lib/utils";
 import { requests } from "@/core/requests/axios";
 import { Button } from "@/components/ui/button";
-import { ATOM_CALENDARS, ATOM_CREATE_EVENT_MODEL } from "@/core/atoms/atom";
+import { ATOM_CREATE_EVENT_MODEL } from "@/core/atoms/atom";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -62,9 +63,12 @@ export default function CreateEventModalForm({
   return (
     <>
       {getEventModal && (
-        <div className="absolute left-1/2 top-1/2 z-10 flex w-[1000px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-black p-4">
+        <motion.div
+          drag={true}
+          className="absolute left-1/2 top-1/2 z-10 flex w-[1000px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-black p-4"
+        >
           <FormModal calendars={calendars} />
-        </div>
+        </motion.div>
       )}
     </>
   );
@@ -149,7 +153,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
 
   return (
     <Form {...form}>
-      <form
+      <motion.form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
@@ -471,7 +475,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
           </Button>
           <Button type="submit">Create Event</Button>
         </div>
-      </form>
+      </motion.form>
     </Form>
   );
 }

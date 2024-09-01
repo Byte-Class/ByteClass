@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { requests } from "@/core/requests/axios";
 
-export default function CreateCalendarModal() {
+export default function CreateCalendarModalForm() {
   const getCalendarModal = useAtomValue(ATOM_CREATE_CALENDAR_MODEL);
 
   return (

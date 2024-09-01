@@ -40,6 +40,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.32.2",
     "drizzle-zod": "^0.5.1",
+    "framer-motion": "^11.3.31",
     "googleapis": "^95.0.0",
     "greeting-time": "^1.0.0",
     "jotai": "^2.9.3",
