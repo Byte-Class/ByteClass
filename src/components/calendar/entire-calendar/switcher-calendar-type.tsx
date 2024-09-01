@@ -18,14 +18,14 @@ export default function CalendarWeekToggleCalendar() {
         setCalendarType(value);
       }}
     >
-      <ToggleGroupItem
+      {/* <ToggleGroupItem
         value="month"
         aria-label="Toggle Month"
         variant={"outline"}
         className="font-bold"
       >
         Month
-      </ToggleGroupItem>
+      </ToggleGroupItem> */}
       <ToggleGroupItem
         value="week"
         aria-label="Toggle Week"
@@ -34,14 +34,14 @@ export default function CalendarWeekToggleCalendar() {
       >
         Week
       </ToggleGroupItem>
-      <ToggleGroupItem
+      {/* <ToggleGroupItem
         value="day"
         aria-label="Toggle Day"
         variant={"outline"}
         className="font-bold"
       >
         Day
-      </ToggleGroupItem>
+      </ToggleGroupItem> */}
     </ToggleGroup>
   );
 }
