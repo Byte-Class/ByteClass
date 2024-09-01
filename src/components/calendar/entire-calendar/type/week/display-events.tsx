@@ -184,10 +184,12 @@ function Event({ event }: { event: EventsType }) {
 
   return (
     <div
-      className="absolute flex w-full flex-col rounded-lg border-l-[6px] border-blue-900 bg-blue-400 p-2"
+      className="absolute flex w-full flex-col rounded-lg border-l-[6px] p-2"
       style={{
         top: `${topValue}rem`,
         height: `${height}rem`,
+        backgroundColor: `#${event.colour}CC`,
+        borderLeft: `solid 7px #${event.colour}`,
       }}
     >
       <p className="font-bold">{event.name}</p>
