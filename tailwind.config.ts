@@ -21,6 +21,7 @@ const config = {
       colors: {
         darkBlack: "#171717",
         lightBlack: "#262626",
+        blackRgba: "rgba(0, 0, 0, 0.5)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

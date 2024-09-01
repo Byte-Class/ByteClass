@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSession } from "next-auth/react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { ATOM_CREATE_CALENDAR_MODEL } from "@/core/atoms/atom";
 import { queryProvider } from "@/components/providers";
@@ -30,11 +31,24 @@ export default function CreateCalendarModalForm() {
 
   return (
     <>
-      {getCalendarModal && (
-        <div className="absolute left-1/2 top-1/2 z-10 flex w-[1000px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-xl bg-black p-4">
-          <FormModal />
-        </div>
-      )}
+      <AnimatePresence>
+        {getCalendarModal && (
+          <motion.div
+            key={"1"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-blackRgba fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center overflow-hidden"
+          >
+            <motion.div
+              drag
+              className="z-20 flex w-[1000px] flex-col rounded-xl bg-darkBlack p-4"
+            >
+              <FormModal />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
