@@ -1,32 +1,29 @@
 "use client";
 
 import { useAtomValue, useSetAtom } from "jotai";
-import {
-  addDays,
-  format,
-  startOfWeek,
-  endOfWeek,
-  eachDayOfInterval,
-} from "date-fns";
+import { format, startOfWeek, endOfWeek, eachDayOfInterval } from "date-fns";
 
-import { ATOM_CURRENT_DAY } from "@/core/atoms/atom";
+import { ATOM_CALENDAR_TYPE, ATOM_CURRENT_DAY } from "@/core/atoms/atom";
+import { daysToAdd } from "@/core/utils/days-to-add";
 
 import { Button } from "@/components/ui/button";
 
 export default function CalendarWeekButtonSwitcher() {
-  const getDate = useAtomValue(ATOM_CURRENT_DAY);
+  const currentDay = useAtomValue(ATOM_CURRENT_DAY);
   const setNewDate = useSetAtom(ATOM_CURRENT_DAY);
 
-  const dayInterval = eachDayOfInterval({
-    start: startOfWeek(getDate),
-    end: endOfWeek(getDate),
+  const calendarType = useAtomValue(ATOM_CALENDAR_TYPE);
+
+  const displayWeeks = eachDayOfInterval({
+    start: startOfWeek(currentDay),
+    end: endOfWeek(currentDay),
   });
 
   return (
     <>
       <Button
         onClick={() => {
-          setNewDate(addDays(getDate, -7));
+          setNewDate(daysToAdd(calendarType, currentDay, "remove"));
         }}
       >
         Prev
@@ -34,7 +31,7 @@ export default function CalendarWeekButtonSwitcher() {
 
       <Button
         onClick={() => {
-          setNewDate(addDays(getDate, 7));
+          setNewDate(daysToAdd(calendarType, currentDay, "add"));
         }}
       >
         Next
@@ -42,9 +39,9 @@ export default function CalendarWeekButtonSwitcher() {
 
       <h2 className="text-2xl font-bold">
         <DisplayMonth
-          firstMonth={dayInterval[0]}
-          lastMonth={dayInterval[dayInterval.length - 1]}
-          year={format(getDate, "uuuu")}
+          firstMonth={displayWeeks[0]}
+          lastMonth={displayWeeks[displayWeeks.length - 1]}
+          year={format(currentDay, "uuuu")}
         />
       </h2>
     </>
