@@ -7,8 +7,6 @@ export const router = t.router;
 export const procedure = t.procedure;
 
 export const adminProcedure = t.procedure.use(({ ctx, next }) => {
-  console.log(ctx.session);
-
   if (!ctx.session) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
