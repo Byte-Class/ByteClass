@@ -1,11 +1,8 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-import { requests } from "@/core/requests/axios";
 import type { Calendar } from "@/core/types/interfaces";
 import { trpc } from "@/server/client";
 
