@@ -12,14 +12,14 @@ export default function CalendarCheckbox({ name, id, checked }: Calendar) {
   const router = useRouter();
 
   const { mutate, isError, isSuccess } =
-    trpc.calendar.toggleCalendar.useMutation();
+    trpc.calendar.toggleCalendar.useMutation({
+      onSuccess() {
+        router.refresh();
+      },
+    });
 
   if (isError) {
     toast.error("Unable to toggle calendar");
-  }
-
-  if (isSuccess) {
-    router.refresh();
   }
 
   return (
