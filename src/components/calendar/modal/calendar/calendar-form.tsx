@@ -1,6 +1,5 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useAtomValue, useSetAtom } from "jotai";
 import { toast } from "react-toastify";
@@ -11,7 +10,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 import { ATOM_CREATE_CALENDAR_MODEL } from "@/core/atoms/atom";
-import { queryProvider } from "@/components/providers";
 
 import {
   Form,
@@ -25,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { requests } from "@/core/requests/axios";
+import { trpc } from "@/server/client";
 
 export default function CreateCalendarModalForm() {
   const getCalendarModal = useAtomValue(ATOM_CREATE_CALENDAR_MODEL);
@@ -39,7 +37,7 @@ export default function CreateCalendarModalForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="bg-blackRgba fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center overflow-hidden"
+            className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center overflow-hidden bg-blackRgba"
           >
             <motion.div
               drag
@@ -62,7 +60,6 @@ const formSchema = z.object({
 function FormModal() {
   const setCalendarModal = useSetAtom(ATOM_CREATE_CALENDAR_MODEL);
 
-  const session = useSession();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -73,21 +70,7 @@ function FormModal() {
     },
   });
 
-  const createCalendar = useMutation({
-    mutationFn: ({ calendarName, description }: z.infer<typeof formSchema>) => {
-      return requests.post(
-        "/api/calendars",
-        {
-          tableName: calendarName,
-          description,
-        },
-        {
-          headers: {
-            session: session.data?.sessionToken,
-          },
-        },
-      );
-    },
+  const { mutate, isError } = trpc.calendar.createCalendar.useMutation({
     onSuccess() {
       toast.success("Successfully Created Calender");
       router.refresh();
@@ -95,8 +78,12 @@ function FormModal() {
     },
   });
 
+  if (isError) {
+    toast.error("Unable to create calendar");
+  }
+
   function onSubmit(data: z.infer<typeof formSchema>) {
-    createCalendar.mutate({
+    mutate({
       ...data,
     });
   }
