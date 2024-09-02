@@ -71,4 +71,30 @@ export const calendar = router({
         message: "Successfully updated table",
       };
     }),
+  createCalendar: adminProcedure
+    .input(
+      z.object({
+        calendarName: z.string().min(1),
+        description: z.string().min(1).max(200),
+      }),
+    )
+    .mutation(async (opts) => {
+      try {
+        await db.insert(timeTable).values({
+          name: opts.input.calendarName,
+          userId: opts.ctx.user.id,
+          description: opts.input.description,
+        });
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          cause: err,
+          message: "Internal server error when fetching data from database",
+        });
+      }
+
+      return {
+        message: "Successfully created calendar",
+      };
+    }),
 });
