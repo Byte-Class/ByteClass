@@ -12,29 +12,17 @@ import { trpc } from "@/server/client";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CalendarCheckbox({ name, id, checked }: Calendar) {
-  const session = useSession();
   const router = useRouter();
 
-  // const toggleCalendar = useMutation({
-  //   mutationFn: () =>
-  //     requests.put(`/api/calendars/${id}`, undefined, {
-  //       headers: {
-  //         session: session.data?.sessionToken,
-  //       },
-  //     }),
-  //   onError: () => {
-  //     toast.error("Unable to check calendar, try again later");
-  //   },
-  //   onSuccess: () => {
-  //     // Invalid cache for old fetchAllCalendars Query
-  //     router.refresh();
-  //   },
-  // });
-
-  const { mutate, isError } = trpc.calendar.toggleCalendar.useMutation();
+  const { mutate, isError, isSuccess } =
+    trpc.calendar.toggleCalendar.useMutation();
 
   if (isError) {
     toast.error("Unable to toggle calendar");
+  }
+
+  if (isSuccess) {
+    router.refresh();
   }
 
   return (
