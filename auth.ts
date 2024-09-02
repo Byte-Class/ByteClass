@@ -13,8 +13,11 @@ const SCOPES = [
   "openid",
   // Courses Scope
   "https://www.googleapis.com/auth/classroom.courses",
+  "https://www.googleapis.com/auth/classroom.courses.readonly",
+  // Coursework scopes
   "https://www.googleapis.com/auth/classroom.coursework.students.readonly",
   "https://www.googleapis.com/auth/classroom.coursework.me.readonly",
+  "https://www.googleapis.com/auth/classroom.coursework.students",
   "https://www.googleapis.com/auth/classroom.coursework.me",
 ];
 
@@ -28,6 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         params: {
           access_type: "offline",
           prompt: "consent",
+          response_type: "code",
           scope: SCOPES.join(" "),
         },
       },
@@ -44,27 +48,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: "database",
-  },
-  callbacks: {
-    async session({ session }) {
-      const tokens = (
-        await db
-          .select({
-            accessToken: accounts.access_token,
-            refreshToken: accounts.refresh_token,
-          })
-          .from(accounts)
-          .where(eq(accounts.userId, session.user.id))
-      )[0];
-
-      if (tokens.accessToken === null || tokens.refreshToken === null) {
-        return session;
-      }
-
-      session.accessToken = tokens.accessToken;
-      session.refreshToken = tokens.refreshToken;
-
-      return session;
-    },
   },
 });
