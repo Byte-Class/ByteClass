@@ -33,3 +33,11 @@ export type EventsType = z.infer<typeof eventSchema>;
 
 const calendarSchema = createSelectSchema(timeTable);
 export type CalendarsType = z.infer<typeof calendarSchema>;
+
+export type ColourType =
+  | "F02D3A"
+  | "FF964F"
+  | "F0D975"
+  | "57BD57"
+  | "6FA8D6"
+  | "A185D6";
