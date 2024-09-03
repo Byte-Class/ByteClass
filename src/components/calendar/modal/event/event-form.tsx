@@ -19,17 +19,16 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dataTagSymbol, useMutation } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 import { COLOURS } from "@/core/data/data";
 import { cn } from "@/core/lib/utils";
-import { requests } from "@/core/requests/axios";
-import { Button } from "@/components/ui/button";
 import { ATOM_CREATE_EVENT_MODEL } from "@/core/atoms/atom";
+import { trpc } from "@/server/client";
+
 import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
@@ -54,7 +53,6 @@ import {
 } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import { CalendarsType, ColourType } from "@/core/types/interfaces";
-import { trpc } from "@/server/client";
 
 export default function CreateEventModalForm({
   calendars,
