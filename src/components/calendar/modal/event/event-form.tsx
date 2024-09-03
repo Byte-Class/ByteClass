@@ -19,11 +19,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { dataTagSymbol, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+import { COLOURS } from "@/core/data/data";
 import { cn } from "@/core/lib/utils";
 import { requests } from "@/core/requests/axios";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,8 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
-import { CalendarsType } from "@/core/types/interfaces";
+import { CalendarsType, ColourType } from "@/core/types/interfaces";
+import { trpc } from "@/server/client";
 
 export default function CreateEventModalForm({
   calendars,
@@ -70,7 +72,7 @@ export default function CreateEventModalForm({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="bg-blackRgba fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center overflow-hidden"
+            className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center overflow-hidden bg-blackRgba"
           >
             <motion.div
               drag
@@ -86,18 +88,14 @@ export default function CreateEventModalForm({
 }
 
 const formSchema = z.object({
-  eventTitle: z.string().min(2),
-  date: z.date({
-    required_error: "A date for events is required",
-  }),
-  from: z.date(),
+  eventName: z.string().min(2),
   description: z.string(),
-  end: z.date(),
   location: z.string(),
-  calendar: z.string(),
-  colour: z.string({
-    required_error: "Please select a Colour.",
-  }),
+  dayOfEvent: z.date(),
+  start: z.date(),
+  end: z.date(),
+  calendarId: z.string(),
+  colour: z.custom<ColourType>(),
 });
 
 const times = eachMinuteOfInterval({
@@ -105,76 +103,47 @@ const times = eachMinuteOfInterval({
   end: endOfDay(new Date()),
 });
 
-const colours = [
-  { label: "Red", value: "F02D3A" },
-  { label: "Orange", value: "FF964F" },
-  { label: "Yellow", value: "F0D975" },
-  { label: "Green", value: "57BD57" },
-  { label: "Blue", value: "6FA8D6" },
-  { label: "Purple", value: "A185D6" },
-] as const;
-
 function FormModal({ calendars }: { calendars: CalendarsType[] }) {
   const setModal = useSetAtom(ATOM_CREATE_EVENT_MODEL);
 
-  const session = useSession();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      eventTitle: "",
+      eventName: "",
       location: "",
       description: "",
     },
   });
 
-  const createEvent = useMutation({
-    mutationFn: ({
-      eventTitle,
-      description,
-      location,
-      date,
-      from,
-      end,
-      calendar,
-      colour,
-    }: z.infer<typeof formSchema>) => {
-      return requests.post(
-        "/api/events",
-        {
-          eventName: eventTitle,
-          description,
-          location,
-          dayOfEvent: formatISO(date),
-          start: formatISO(from),
-          end: formatISO(end),
-          calendarId: calendar,
-          colour,
-        },
-        {
-          headers: {
-            session: session.data?.sessionToken,
-          },
-        },
-      );
-    },
-    onSuccess: () => {
+  const { mutate } = trpc.events.createEvent.useMutation({
+    onSuccess() {
       toast.success("Successfully Created Event");
       router.refresh();
       form.reset();
+    },
+    onError() {
+      toast.error("Error while making event");
     },
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     // if the ending time is before the start time, we return an error to the client
-    if (isBefore(data.end, data.from)) {
+    if (isBefore(data.end, data.start)) {
       toast.error("Ending time for an event should not be before the start");
       return;
     }
 
-    createEvent.mutate({
-      ...data,
+    mutate({
+      eventName: data.eventName,
+      description: data.description,
+      location: data.location,
+      dayOfEvent: formatISO(data.dayOfEvent),
+      start: formatISO(data.start),
+      end: formatISO(data.end),
+      calendarId: data.calendarId,
+      colour: data.colour,
     });
   }
 
@@ -187,7 +156,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
         {/* Event Name */}
         <FormField
           control={form.control}
-          name="eventTitle"
+          name="eventName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Event Name</FormLabel>
@@ -199,12 +168,13 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
             </FormItem>
           )}
         />
+
         {/* event time and day */}
         <div className="flex gap-3">
           {/* day picker */}
           <FormField
             control={form.control}
-            name="date"
+            name="dayOfEvent"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Day</FormLabel>
@@ -248,7 +218,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
           {/* start time */}
           <FormField
             control={form.control}
-            name="from"
+            name="start"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>From</FormLabel>
@@ -289,7 +259,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
                               value={format(time, "p")}
                               key={ind}
                               onSelect={() => {
-                                form.setValue("from", time);
+                                form.setValue("start", time);
                               }}
                             >
                               <FontAwesomeIcon
@@ -441,7 +411,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
                       )}
                     >
                       {field.value
-                        ? colours.find((colour) => colour.value === field.value)
+                        ? COLOURS.find((colour) => colour.value === field.value)
                             ?.label
                         : "Select Colour"}
                       <FontAwesomeIcon
@@ -457,7 +427,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
                     <CommandList>
                       <CommandEmpty>No colour found.</CommandEmpty>
                       <CommandGroup>
-                        {colours.map((colour) => (
+                        {COLOURS.map((colour) => (
                           <CommandItem
                             value={colour.label}
                             key={colour.value}
@@ -497,7 +467,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
         {/* calendars */}
         <FormField
           control={form.control}
-          name="calendar"
+          name="calendarId"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Calendar</FormLabel>
@@ -535,7 +505,7 @@ function FormModal({ calendars }: { calendars: CalendarsType[] }) {
                             value={calendar.name}
                             key={calendar.id}
                             onSelect={() => {
-                              form.setValue("calendar", calendar.id);
+                              form.setValue("calendarId", calendar.id);
                             }}
                           >
                             <FontAwesomeIcon
