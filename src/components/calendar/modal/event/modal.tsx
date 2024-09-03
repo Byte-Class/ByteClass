@@ -1,6 +1,5 @@
 import { auth } from "auth";
 import { eq } from "drizzle-orm";
-import { SessionProvider } from "next-auth/react";
 
 import { db } from "@/drizzle/db";
 import { timeTable } from "@/drizzle/schema";
@@ -15,9 +14,5 @@ export default async function CreateEventModal() {
     .from(timeTable)
     .where(eq(timeTable.userId, session?.user?.id as string));
 
-  return (
-    <SessionProvider session={session}>
-      <CreateEventModalForm calendars={calendars} />
-    </SessionProvider>
-  );
+  return <CreateEventModalForm calendars={calendars} />;
 }

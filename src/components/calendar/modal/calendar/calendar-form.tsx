@@ -5,7 +5,6 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 

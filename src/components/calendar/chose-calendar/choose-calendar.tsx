@@ -5,7 +5,6 @@ import { db } from "@/drizzle/db";
 import { timeTable } from "@/drizzle/schema";
 
 import CalendarCheckbox from "@/components/calendar/chose-calendar/calendar-checkbox";
-import { SessionProvider } from "next-auth/react";
 
 export default async function ChoseCalendar() {
   const session = await auth();
@@ -18,17 +17,15 @@ export default async function ChoseCalendar() {
 
   return (
     <div className="flex flex-col gap-2">
-      <SessionProvider session={session}>
-        {data.map((calendar) => (
-          <CalendarCheckbox
-            name={calendar.name}
-            id={calendar.id}
-            userId={calendar.userId}
-            checked={calendar.checked}
-            key={crypto.randomUUID()}
-          />
-        ))}
-      </SessionProvider>
+      {data.map((calendar) => (
+        <CalendarCheckbox
+          name={calendar.name}
+          id={calendar.id}
+          userId={calendar.userId}
+          checked={calendar.checked}
+          key={crypto.randomUUID()}
+        />
+      ))}
     </div>
   );
 }
