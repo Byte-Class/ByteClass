@@ -108,3 +108,11 @@ export const event = pgTable("event", {
     "F02D3A" | "FF964F" | "F0D975" | "57BD57" | "6FA8D6" | "A185D6"
   >(),
 });
+
+export const pinnedCourses = pgTable("pinned_courses", {
+  courseId: text("id").notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  isPinned: boolean("isPinned").notNull(),
+});
