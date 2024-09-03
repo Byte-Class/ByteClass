@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import { auth } from "auth";
 import { google } from "googleapis";
 
-import { CourseList } from "@/core/types/interfaces";
-
-import ClassPicker from "@/components/tasks/class-picker";
-import PinnedClasses from "@/components/tasks/pinned-classes";
-import SectionTasks from "@/components/tasks/section-tasks";
-import SideBarOther from "@/components/dashboard/sidebar";
 import { db } from "@/drizzle/db";
 import { accounts } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+
+import ClassPicker from "@/components/tasks/class-picker/class-picker";
+import PinnedClasses from "@/components/tasks/pinned-classes";
+import SectionTasks from "@/components/tasks/section-tasks";
 
 export const metadata: Metadata = {
   title: "Tasks | Byte Class",
@@ -47,23 +45,6 @@ export default async function Tasks() {
   });
 
   const classroom = google.classroom("v1");
-
-  // get all courses
-  const allCourses = (
-    await classroom.courses.list({
-      courseStates: ["ACTIVE"],
-    })
-  ).data.courses;
-
-  if (allCourses === undefined) {
-    return;
-  }
-
-  const courses: CourseList[] = [];
-
-  allCourses.map((course) => {
-    courses.push({ name: course.name, id: course.id });
-  });
 
   const courseWorksTurnedIn = (
     await classroom.courses.courseWork.studentSubmissions.list({
@@ -103,7 +84,7 @@ export default async function Tasks() {
       <h2 className="text-5xl font-bold">Your Tasks</h2>
 
       <div className="mt-4 flex w-full gap-4">
-        <ClassPicker courses={courses} />
+        <ClassPicker />
 
         <PinnedClasses />
       </div>
