@@ -1,0 +1,1 @@
+ALTER TABLE "active_courses" RENAME COLUMN "isPinned" TO "active";
