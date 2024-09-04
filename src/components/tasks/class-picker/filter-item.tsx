@@ -31,6 +31,9 @@ export default function ClassPickerFilterItem({
     onError() {
       toast.error("Unable to toggle pin :(");
     },
+    onSuccess() {
+      router.refresh();
+    },
   });
 
   const { data } = trpc.tasks.pinnedState.useQuery({
@@ -52,7 +55,6 @@ export default function ClassPickerFilterItem({
               }
 
               mutate({ courseId: course.id, courseName: course.name });
-              router.refresh();
             }}
           >
             <FontAwesomeIcon icon={faThumbTack} className="mr-2" />
