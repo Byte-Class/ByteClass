@@ -115,4 +115,5 @@ export const pinnedCourses = pgTable("pinned_courses", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   isPinned: boolean("isPinned").notNull(),
+  courseName: text("courseName"),
 });

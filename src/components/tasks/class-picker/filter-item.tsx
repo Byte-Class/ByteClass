@@ -46,12 +46,12 @@ export default function ClassPickerFilterItem({
         <DropdownMenuSubContent>
           <DropdownMenuItem
             onClick={() => {
-              if (!course.id) {
+              if (!course.id || !course.name) {
                 toast.error("Google man, why is the course id undefined");
                 return;
               }
 
-              mutate({ courseId: course.id });
+              mutate({ courseId: course.id, courseName: course.name });
               router.refresh();
             }}
           >

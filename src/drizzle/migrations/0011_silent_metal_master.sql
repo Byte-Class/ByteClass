@@ -1,0 +1,1 @@
+ALTER TABLE "pinned_courses" ADD COLUMN "courseName" text;

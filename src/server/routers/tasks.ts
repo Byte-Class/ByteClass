@@ -11,6 +11,7 @@ export const tasks = router({
     .input(
       z.object({
         courseId: z.string(),
+        courseName: z.string(),
       }),
     )
     .mutation(async (opts) => {
@@ -41,6 +42,7 @@ export const tasks = router({
             courseId: opts.input.courseId,
             isPinned: true,
             userId: opts.ctx.user.id,
+            courseName: opts.input.courseName,
           });
         } catch (err) {
           throw new TRPCError({
