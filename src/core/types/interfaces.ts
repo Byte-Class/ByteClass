@@ -2,7 +2,7 @@ import { createSelectSchema } from "drizzle-zod";
 import { classroom_v1 } from "googleapis";
 import { z } from "zod";
 
-import { event, timeTable } from "@/drizzle/schema";
+import { event, pinnedCourses, timeTable } from "@/drizzle/schema";
 
 export interface CourseList {
   id: string | null | undefined;
@@ -21,11 +21,6 @@ export interface Calendar {
   checked: boolean;
 }
 
-export interface CalendarsChecked {
-  id: string;
-  name: string;
-}
-
 const eventSchema = createSelectSchema(event, {
   time: z.object({ start: z.string(), end: z.string() }),
 });
@@ -41,3 +36,6 @@ export type ColourType =
   | "57BD57"
   | "6FA8D6"
   | "A185D6";
+
+const pinnedSchema = createSelectSchema(pinnedCourses);
+export type PinnedType = z.infer<typeof pinnedSchema>;
