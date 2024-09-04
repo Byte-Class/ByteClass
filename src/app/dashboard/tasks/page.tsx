@@ -7,7 +7,7 @@ import { accounts } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 import ClassPicker from "@/components/tasks/class-picker/class-picker";
-import PinnedClasses from "@/components/tasks/pinned-classes";
+import PinnedCourses from "@/components/tasks/pinned-courses/pinned-courses";
 import SectionTasks from "@/components/tasks/section-tasks";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default async function Tasks() {
     process.env.GOOGLE_CALLBACK,
   );
 
-  const { access_token, refresh_token } = (
+  const { refresh_token } = (
     await db
       .select()
       .from(accounts)
@@ -36,7 +36,6 @@ export default async function Tasks() {
   )[0];
 
   oauth2Client.setCredentials({
-    access_token,
     refresh_token,
   });
 
@@ -86,7 +85,7 @@ export default async function Tasks() {
       <div className="mt-4 flex w-full gap-4">
         <ClassPicker />
 
-        <PinnedClasses />
+        <PinnedCourses />
       </div>
 
       <div className="ml-auto mr-auto mt-4 w-11/12">
