@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenuItem,
   DropdownMenuPortal,
@@ -9,7 +8,7 @@ import {
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbTack } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faThumbTack } from "@fortawesome/free-solid-svg-icons";
 import { classroom_v1 } from "googleapis";
 import { toast } from "react-toastify";
 import { trpc } from "@/server/client";
@@ -27,7 +26,7 @@ export default function ClassPickerFilterItem({
     return;
   }
 
-  const { mutate } = trpc.tasks.togglePin.useMutation({
+  const togglePin = trpc.tasks.togglePin.useMutation({
     onError() {
       toast.error("Unable to toggle pin :(");
     },
@@ -36,18 +35,37 @@ export default function ClassPickerFilterItem({
     },
   });
 
-  const { data } = trpc.tasks.pinnedState.useQuery({
+  const toggleActiveCourse = trpc.tasks.toggleActiveClass.useMutation({
+    onError() {
+      toast.error("Unable to toggle course :(");
+    },
+    onSuccess() {
+      console.log("e");
+      router.refresh();
+    },
+  });
+
+  const pinnedState = trpc.tasks.pinnedState.useQuery({
+    courseId: course.id,
+  });
+
+  const activeState = trpc.tasks.activeState.useQuery({
     courseId: course.id,
   });
 
   return (
     <DropdownMenuSub key={crypto.randomUUID()}>
       <DropdownMenuSubTrigger>
-        {data?.pinned ? (
+        {pinnedState.data?.pinned ? (
           <FontAwesomeIcon icon={faThumbTack} className="mr-2 text-blue-400" />
         ) : null}
 
-        <div></div>
+        {activeState.data?.pinned ? (
+          <FontAwesomeIcon
+            icon={faCheckCircle}
+            className="mr-2 text-green-400"
+          />
+        ) : null}
 
         <span>{course.name}</span>
       </DropdownMenuSubTrigger>
@@ -60,14 +78,37 @@ export default function ClassPickerFilterItem({
                 return;
               }
 
-              mutate({ courseId: course.id, courseName: course.name });
+              togglePin.mutate({
+                courseId: course.id,
+                courseName: course.name,
+              });
             }}
           >
             <FontAwesomeIcon
               icon={faThumbTack}
               className="mr-2 text-blue-400"
             />
-            {data?.pinned ? "Unpin" : "Pin"}
+            {pinnedState.data?.pinned ? "Unpin" : "Pin"}
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => {
+              if (!course.id || !course.name) {
+                toast.error("Google man, why is the course id undefined");
+                return;
+              }
+
+              toggleActiveCourse.mutate({
+                courseId: course.id,
+                courseName: course.name,
+              });
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faCheckCircle}
+              className="mr-2 text-green-400"
+            />
+            Toggle
           </DropdownMenuItem>
         </DropdownMenuSubContent>
       </DropdownMenuPortal>
