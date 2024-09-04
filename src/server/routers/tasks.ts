@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 
 import { adminProcedure, router } from "../trpc";
 import { db } from "@/drizzle/db";
-import { pinnedCourses } from "@/drizzle/schema";
+import { activeCourses, pinnedCourses } from "@/drizzle/schema";
 
 export const tasks = router({
   togglePin: adminProcedure
@@ -106,6 +106,116 @@ export const tasks = router({
       }
 
       if (drizzle.length === 0 || drizzle[0].isPinned === false) {
+        return {
+          message: "Success",
+          pinned: false,
+        };
+      }
+
+      return {
+        message: "Success",
+        pinned: true,
+      };
+    }),
+  toggleActiveClass: adminProcedure
+    .input(
+      z.object({
+        courseId: z.string(),
+        courseName: z.string(),
+      }),
+    )
+    .mutation(async (opts) => {
+      let drizzle;
+
+      try {
+        drizzle = await db
+          .select()
+          .from(activeCourses)
+          .where(
+            and(
+              eq(activeCourses.userId, opts.ctx.user.id),
+              eq(activeCourses.courseId, opts.input.courseId),
+            ),
+          );
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          cause: err,
+          message: "Error while requesting resource from database",
+        });
+      }
+
+      // if the resource does not exist, we add it to the database with pinned = true
+      if (drizzle.length === 0) {
+        try {
+          await db.insert(activeCourses).values({
+            courseId: opts.input.courseId,
+            active: true,
+            userId: opts.ctx.user.id,
+            courseName: opts.input.courseName,
+          });
+        } catch (err) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            cause: err,
+            message: "Error while inserting course into database",
+          });
+        }
+
+        return { message: "Successfully activated Course" };
+      }
+
+      // else we just update the resource
+      try {
+        await db
+          .update(activeCourses)
+          .set({
+            active: !drizzle[0].active,
+          })
+          .where(
+            and(
+              eq(activeCourses.userId, opts.ctx.user.id),
+              eq(activeCourses.courseId, opts.input.courseId),
+            ),
+          );
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          cause: err,
+          message: "Error while updating resource from database",
+        });
+      }
+
+      return { message: "Successfully activated Course" };
+    }),
+  activeState: adminProcedure
+    .input(
+      z.object({
+        courseId: z.string(),
+      }),
+    )
+    .query(async (opts) => {
+      let drizzle;
+
+      try {
+        drizzle = await db
+          .select()
+          .from(activeCourses)
+          .where(
+            and(
+              eq(activeCourses.userId, opts.ctx.user.id),
+              eq(activeCourses.courseId, opts.input.courseId),
+            ),
+          );
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          cause: err,
+          message: "Error while requesting resource from database",
+        });
+      }
+
+      if (drizzle.length === 0 || drizzle[0].active === false) {
         return {
           message: "Success",
           pinned: false,
