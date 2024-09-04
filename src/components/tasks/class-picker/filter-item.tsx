@@ -43,6 +43,12 @@ export default function ClassPickerFilterItem({
   return (
     <DropdownMenuSub key={crypto.randomUUID()}>
       <DropdownMenuSubTrigger>
+        {data?.pinned ? (
+          <FontAwesomeIcon icon={faThumbTack} className="mr-2 text-blue-400" />
+        ) : null}
+
+        <div></div>
+
         <span>{course.name}</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
@@ -57,7 +63,10 @@ export default function ClassPickerFilterItem({
               mutate({ courseId: course.id, courseName: course.name });
             }}
           >
-            <FontAwesomeIcon icon={faThumbTack} className="mr-2" />
+            <FontAwesomeIcon
+              icon={faThumbTack}
+              className="mr-2 text-blue-400"
+            />
             {data?.pinned ? "Unpin" : "Pin"}
           </DropdownMenuItem>
         </DropdownMenuSubContent>
