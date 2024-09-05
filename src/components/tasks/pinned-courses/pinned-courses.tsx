@@ -1,32 +1,25 @@
-import { auth } from "auth";
+"use client";
+import { toast } from "react-toastify";
 
-import { db } from "@/drizzle/db";
-import { pinnedCourses } from "@/drizzle/schema";
-
-import { ToggleGroup } from "@/components/ui/toggle-group";
-import { and, eq } from "drizzle-orm";
+import { trpc } from "@/server/client";
 import PinnedCoursesItem from "./pinned-item";
 
-export default async function PinnedCourses() {
-  const session = await auth();
+import { ToggleGroup } from "@/components/ui/toggle-group";
 
-  if (!session || !session.user || !session.user.id) {
-    return;
+export default function PinnedCourses() {
+  const { data, isPending, isError } = trpc.courses.pinned.useQuery();
+
+  if (isPending) {
+    return <h2>Loading...</h2>;
   }
 
-  const pinned = await db
-    .select()
-    .from(pinnedCourses)
-    .where(
-      and(
-        eq(pinnedCourses.userId, session.user.id),
-        eq(pinnedCourses.isPinned, true),
-      ),
-    );
+  if (isError || !data) {
+    return toast.error("Unable to fetch pinned classes");
+  }
 
   return (
     <ToggleGroup type="multiple">
-      {pinned.map((pin) => {
+      {data.map((pin) => {
         return <PinnedCoursesItem key={crypto.randomUUID()} course={pin} />;
       })}
     </ToggleGroup>

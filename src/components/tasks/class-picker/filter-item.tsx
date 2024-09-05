@@ -1,5 +1,9 @@
 "use client";
 
+import { classroom_v1 } from "googleapis";
+import { toast } from "react-toastify";
+
+import { trpc } from "@/server/client";
 import {
   DropdownMenuItem,
   DropdownMenuPortal,
@@ -9,17 +13,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faThumbTack } from "@fortawesome/free-solid-svg-icons";
-import { classroom_v1 } from "googleapis";
-import { toast } from "react-toastify";
-import { trpc } from "@/server/client";
-import { useRouter } from "next/navigation";
 
 export default function ClassPickerFilterItem({
   course,
 }: {
   course: classroom_v1.Schema$Course;
 }) {
-  const router = useRouter();
+  const utils = trpc.useUtils();
 
   if (!course.id) {
     toast.error("Google man, why is the course id undefined");
@@ -27,11 +27,11 @@ export default function ClassPickerFilterItem({
   }
 
   const togglePin = trpc.tasks.togglePin.useMutation({
-    onError() {
+    onError(err) {
       toast.error("Unable to toggle pin :(");
     },
     onSuccess() {
-      router.refresh();
+      utils.courses.pinned.invalidate();
     },
   });
 
@@ -40,8 +40,7 @@ export default function ClassPickerFilterItem({
       toast.error("Unable to toggle course :(");
     },
     onSuccess() {
-      console.log("e");
-      router.refresh();
+      utils.courses.pinned.invalidate();
     },
   });
 

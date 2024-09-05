@@ -1,3 +1,5 @@
+"use client";
+
 import { PinnedType } from "@/core/types/interfaces";
 
 import { ToggleGroupItem } from "@/components/ui/toggle-group";
