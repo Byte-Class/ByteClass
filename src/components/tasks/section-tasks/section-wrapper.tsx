@@ -1,25 +1,30 @@
+"use client";
+import { trpc } from "@/server/client";
+
 import OverdueSection from "./overdue-section";
 import ReturnedSection from "./returned-section";
 import HandedInSection from "./handed-in-section";
 
-export default async function SectionTasksWrapper() {
-  // const courseWorksOverdue = await new FetchGoogle(active).courseWorksOverDue();
+export default function SectionTasksWrapper() {
+  const { data, isPending } = trpc.courses.activeCourses.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
-  // const returnedReclaimedReturned = await new FetchGoogle(
-  //   active,
-  // ).fetchReclaimedReturned();
+  if (isPending) {
+    return <h2>LOADING ALL</h2>;
+  }
+
+  if (!data) {
+    return <h2>Unknown error while fetching courses</h2>;
+  }
+
+  const activeCourses = data.map((course) => course.courseId) ?? [];
 
   return (
     <>
-      {/* <SectionTasks sectionHeader="Overdue" itemsToShow={courseWorksOverdue} />
-
-      <SectionTasks
-        sectionHeader="Returned"
-        itemsToShow={returnedReclaimedReturned}
-      /> */}
-      <OverdueSection />
-      <ReturnedSection />
-      <HandedInSection />
+      <OverdueSection activeCourses={activeCourses} />
+      <ReturnedSection activeCourses={activeCourses} />
+      <HandedInSection activeCourses={activeCourses} />
     </>
   );
 }

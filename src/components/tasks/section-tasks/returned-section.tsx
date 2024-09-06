@@ -7,15 +7,11 @@ import { trpc } from "@/server/client";
 
 import Line from "@/components/line";
 
-export default function ReturnedSection() {
-  const queryActiveCourses = trpc.courses.activeCourses.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  });
-
-  const activeCourses = queryActiveCourses.data?.map(
-    (course) => course.courseId,
-  );
-
+export default function ReturnedSection({
+  activeCourses,
+}: {
+  activeCourses: string[];
+}) {
   const { data, isPending } = trpc.courses.returnedReturnedWorks.useQuery(
     {
       courseIds: activeCourses as string[],
@@ -26,7 +22,7 @@ export default function ReturnedSection() {
     },
   );
 
-  if (queryActiveCourses.isPending || isPending) {
+  if (isPending) {
     return <h2>Loading...</h2>;
   }
 

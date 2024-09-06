@@ -138,7 +138,7 @@ export const courses = router({
     }),
   activeCourses: adminProcedure.query(async (opts) => {
     try {
-      return await db
+      const courses = await db
         .select()
         .from(activeCourses)
         .where(
@@ -147,6 +147,8 @@ export const courses = router({
             eq(activeCourses.active, true),
           ),
         );
+
+      return courses;
     } catch (err) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
