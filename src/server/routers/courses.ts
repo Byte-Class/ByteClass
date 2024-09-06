@@ -51,6 +51,49 @@ export const courses = router({
 
       return handedIn;
     }),
+  overdueWorks: adminProcedure
+    .input(
+      z.object({
+        courseIds: z.array(z.string()),
+      }),
+    )
+    .query(async (opts) => {
+      const { refresh_token } = (
+        await db
+          .select({
+            refresh_token: accounts.refresh_token,
+          })
+          .from(accounts)
+          .where(eq(accounts.userId, opts.ctx.user.id))
+      )[0];
+
+      authGoogle(refresh_token);
+
+      const classroom = google.classroom("v1");
+
+      const overdue: classroom_v1.Schema$StudentSubmission[] = [];
+
+      for (let i = 0; i < opts.input.courseIds.length; i++) {
+        const courseId = opts.input.courseIds[i];
+
+        const courseWorkOverdue = (
+          await classroom.courses.courseWork.studentSubmissions.list({
+            courseId: courseId,
+            courseWorkId: "-",
+            late: "LATE_ONLY",
+            states: ["CREATED"],
+          })
+        ).data.studentSubmissions;
+
+        if (!courseWorkOverdue) {
+          continue;
+        }
+
+        overdue.push(...courseWorkOverdue);
+      }
+
+      return overdue;
+    }),
   activeCourses: adminProcedure.query(async (opts) => {
     try {
       return await db
