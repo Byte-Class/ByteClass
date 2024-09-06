@@ -94,6 +94,48 @@ export const courses = router({
 
       return overdue;
     }),
+  returnedReturnedWorks: adminProcedure
+    .input(
+      z.object({
+        courseIds: z.array(z.string()),
+      }),
+    )
+    .query(async (opts) => {
+      const { refresh_token } = (
+        await db
+          .select({
+            refresh_token: accounts.refresh_token,
+          })
+          .from(accounts)
+          .where(eq(accounts.userId, opts.ctx.user.id))
+      )[0];
+
+      authGoogle(refresh_token);
+
+      const classroom = google.classroom("v1");
+
+      const reclaimedReturned: classroom_v1.Schema$StudentSubmission[] = [];
+
+      for (let i = 0; i < opts.input.courseIds.length; i++) {
+        const courseId = opts.input.courseIds[i];
+
+        const courseWorkReclaimedReturned = (
+          await classroom.courses.courseWork.studentSubmissions.list({
+            courseId: courseId,
+            courseWorkId: "-",
+            states: ["RETURNED", "RECLAIMED_BY_STUDENT"],
+          })
+        ).data.studentSubmissions;
+
+        if (!courseWorkReclaimedReturned) {
+          continue;
+        }
+
+        reclaimedReturned.push(...courseWorkReclaimedReturned);
+      }
+
+      return reclaimedReturned;
+    }),
   activeCourses: adminProcedure.query(async (opts) => {
     try {
       return await db
@@ -113,7 +155,7 @@ export const courses = router({
       });
     }
   }),
-  fetchCourseWork: adminProcedure
+  fetchCourseWorkInfo: adminProcedure
     .input(
       z.object({
         courseId: z.string(),

@@ -1,4 +1,5 @@
 import OverdueSection from "./overdue-section";
+import ReturnedSection from "./returned-section";
 import HandedInSection from "./handed-in-section";
 
 export default async function SectionTasksWrapper() {
@@ -17,6 +18,7 @@ export default async function SectionTasksWrapper() {
         itemsToShow={returnedReclaimedReturned}
       /> */}
       <OverdueSection />
+      <ReturnedSection />
       <HandedInSection />
     </>
   );
