@@ -19,7 +19,7 @@ export default async function Tasks() {
         <PinnedCourses />
       </div>
 
-      <div className="ml-auto mr-auto mt-4 w-11/12">
+      <div className="ml-auto mr-auto mt-4 h-[40rem] w-11/12 overflow-y-scroll">
         <SectionTasksWrapper />
       </div>
     </div>
