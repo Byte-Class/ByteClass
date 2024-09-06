@@ -6,7 +6,7 @@ import { adminProcedure, router } from "../trpc";
 import { db } from "@/drizzle/db";
 import { pinnedCourses } from "@/drizzle/schema";
 
-export const courses = router({
+export const pinned = router({
   pinned: adminProcedure.query(async (opts) => {
     try {
       return await db
