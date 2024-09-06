@@ -59,7 +59,7 @@ export default function OverdueSection() {
   );
 }
 function ShowSectionTask({ courseId, id }: { courseId: string; id: string }) {
-  const { data, isPending } = trpc.courses.fetchCourseWork.useQuery({
+  const { data, isPending } = trpc.courses.fetchCourseWorkInfo.useQuery({
     courseId,
     id,
   });
