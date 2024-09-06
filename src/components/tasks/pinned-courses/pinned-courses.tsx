@@ -5,12 +5,19 @@ import { trpc } from "@/server/client";
 import PinnedCoursesItem from "./pinned-item";
 
 import { ToggleGroup } from "@/components/ui/toggle-group";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PinnedCourses() {
   const { data, isPending, isError } = trpc.pinned.pinned.useQuery();
 
   if (isPending) {
-    return <h2>Loading...</h2>;
+    return (
+      <div className="flex items-center justify-center gap-1">
+        <Skeleton className="h-9 w-16" />
+        <Skeleton className="h-9 w-14" />
+        <Skeleton className="h-9 w-28" />
+      </div>
+    );
   }
 
   if (isError || !data) {
