@@ -19,7 +19,9 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "auth": ["./auth.ts"]
+      "auth": ["./auth.ts"],
+      "db": ["./src/drizzle/db"],
+      "tables": ["./src/drizzle/schema"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
