@@ -1,31 +1,34 @@
 "use client";
 
-import { auth } from "auth";
-import { classroom_v1, google } from "googleapis";
+import { classroom_v1 } from "googleapis";
 import Image from "next/image";
 
-import { Badge } from "@/components/ui/badge";
-import { PropsSectionTasks } from "@/core/types/interfaces";
-import Line from "@/components/line";
-import { determineBadges } from "@/core/utils/determine-badges";
-import { cn } from "@/core/lib/utils";
 import { trpc } from "@/server/client";
 
+import Line from "@/components/line";
+
 export default function HandedInSection() {
-  const queryActiveCourses = trpc.courses.activeCourses.useQuery();
+  const queryActiveCourses = trpc.courses.activeCourses.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   const activeCourses = queryActiveCourses.data?.map(
     (course) => course.courseId,
   );
 
-  const { data } = trpc.courses.handedInWorks.useQuery(
+  const { data, isPending } = trpc.courses.handedInWorks.useQuery(
     {
       courseIds: activeCourses as string[],
     },
     {
       enabled: !!activeCourses,
+      refetchOnWindowFocus: false,
     },
   );
+
+  if (queryActiveCourses.isPending || isPending) {
+    return <h2>Loading...</h2>;
+  }
 
   if (!data) {
     return;
@@ -65,49 +68,52 @@ function ShowSectionTask({ courseId, id }: { courseId: string; id: string }) {
     return <h2>Loading...</h2>;
   }
 
+  if (!data) {
+    return;
+  }
+
   // const badgesToDisplay = determineBadges({
-  //   state: item.state,
-  //   late: item.late,
-  //   dueDate: courseWork.dueDate,
+  //   state: data.state,
+  //   late: data?.late,
+  //   dueDate: data.dueDate,
   // });
 
   return (
     // h-1 == height: 0.25rem, this is due to h-full not working. Here is stack overflow post https://stackoverflow.com/questions/8468066/child-inside-parent-with-min-height-100-not-inheriting-height
-    // <div className="mb-3 mt-3 flex h-1 min-h-40 justify-between rounded-lg bg-lightBlack p-4">
-    //   <div className="flex h-full w-11/12 flex-col justify-between gap-4">
-    //     <div className="w-full">
-    //       <h4 className="text-2xl font-bold">{courseWork.title}</h4>
-    //       <p className="text-neutral-400">{courseWork.description}</p>
-    //     </div>
-    //     <div className="flex items-center gap-4">
-    //       <Image
-    //         src={"/logos/classroom.svg"}
-    //         alt="Google Classroom Image"
-    //         width={50}
-    //         height={50}
-    //       />
+    <div className="mb-3 mt-3 flex min-h-40 justify-between rounded-lg bg-lightBlack p-4">
+      <div className="flex h-full w-11/12 flex-col justify-between gap-4">
+        <div className="w-full">
+          <h4 className="text-2xl font-bold">{data.title}</h4>
+          <p className="text-neutral-400">{data.description}</p>
+        </div>
+        <div className="flex items-center gap-4">
+          <Image
+            src={"/logos/classroom.svg"}
+            alt="Google Classroom Image"
+            width={50}
+            height={50}
+          />
 
-    //       <a
-    //         href={courseWork.alternateLink!}
-    //         target="_blank"
-    //         className="text-white underline"
-    //       >
-    //         See In Google Classroom
-    //       </a>
-    //     </div>
-    //   </div>
+          <a
+            href={data.alternateLink!}
+            target="_blank"
+            className="text-white underline"
+          >
+            See In Google Classroom
+          </a>
+        </div>
+      </div>
 
-    //   <div className="flex h-full w-1/12 flex-col items-center justify-center gap-3">
-    //     {badgesToDisplay.map((badge) => (
-    //       <Badge
-    //         className={cn(badge.bgColour, badge.textColour)}
-    //         key={crypto.randomUUID()}
-    //       >
-    //         {badge.badge}
-    //       </Badge>
-    //     ))}
-    //   </div>
-    // </div>
-    <h2>e</h2>
+      <div className="flex h-full w-1/12 flex-col items-center justify-center gap-3">
+        {/* {badgesToDisplay.map((badge) => (
+          <Badge
+            className={cn(badge.bgColour, badge.textColour)}
+            key={crypto.randomUUID()}
+          >
+            {badge.badge}
+          </Badge>
+        ))} */}
+      </div>
+    </div>
   );
 }
