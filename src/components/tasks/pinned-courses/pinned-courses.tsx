@@ -7,7 +7,7 @@ import PinnedCoursesItem from "./pinned-item";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 
 export default function PinnedCourses() {
-  const { data, isPending, isError } = trpc.courses.pinned.useQuery();
+  const { data, isPending, isError } = trpc.pinned.pinned.useQuery();
 
   if (isPending) {
     return <h2>Loading...</h2>;

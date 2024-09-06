@@ -27,11 +27,11 @@ export default function ClassPickerFilterItem({
   }
 
   const togglePin = trpc.tasks.togglePin.useMutation({
-    onError(err) {
+    onError() {
       toast.error("Unable to toggle pin :(");
     },
     onSuccess() {
-      utils.courses.pinned.invalidate();
+      utils.pinned.pinned.invalidate();
     },
   });
 
@@ -40,7 +40,7 @@ export default function ClassPickerFilterItem({
       toast.error("Unable to toggle course :(");
     },
     onSuccess() {
-      utils.courses.pinned.invalidate();
+      utils.pinned.pinned.invalidate();
     },
   });
 

@@ -8,6 +8,10 @@ import Testimonial from "@/components/testimonial";
 import Line from "@/components/line";
 import Footer from "@/components/footer";
 
+import { db } from "db";
+import { accounts, users } from "@/drizzle/schema";
+import { eq, SQL } from "drizzle-orm";
+
 export const metadata: Metadata = {
   title: "Home | ByteClass",
 };
@@ -18,6 +22,33 @@ export default async function Home() {
   if (session) {
     redirect("/dashboard");
   }
+
+  // First query the users table, then we add a user, query it again to verify the user was added, delete that same user,
+  // then we query the users table to verify that teh query happened.
+  console.log("------------------ INITIAL DATA ------------------");
+  console.log(await db.select().from(users));
+
+  console.log("------------------ INSERT INTO TABLE ------------------");
+
+  console.log(
+    await db.insert(users).values({
+      id: "rick_id69420",
+      name: "Rick Astley",
+      email: "rickastley@astleyrick.com",
+      emailVerified: new Date(1966, 1, 6),
+      image:
+        "https://variety.com/wp-content/uploads/2021/07/Rick-Astley-Never-Gonna-Give-You-Up.png?w=1000&h=667&crop=1&resize=1000%2C667",
+    }),
+  );
+
+  console.log("------------------ DATA AFTER INSERT ------------------");
+  console.log(await db.select().from(users));
+  console.log("------------------ DELETED USERS ------------------");
+  console.log(await db.delete(users).where(eq(users.name, "Rick Astley")));
+  console.log(
+    "------------------ DATA AFTER DELETE USER RICK ASTLEY ------------------",
+  );
+  console.log(await db.select().from(users));
 
   return (
     <>
