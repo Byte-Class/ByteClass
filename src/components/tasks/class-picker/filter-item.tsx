@@ -32,6 +32,7 @@ export default function ClassPickerFilterItem({
     },
     onSuccess() {
       utils.pinned.pinned.invalidate();
+      utils.courses.activeCourses.invalidate();
     },
   });
 
@@ -41,6 +42,7 @@ export default function ClassPickerFilterItem({
     },
     onSuccess() {
       utils.pinned.pinned.invalidate();
+      utils.courses.activeCourses.invalidate();
     },
   });
 
