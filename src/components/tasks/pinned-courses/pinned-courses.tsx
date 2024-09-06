@@ -25,7 +25,7 @@ export default function PinnedCourses() {
   }
 
   return (
-    <ToggleGroup type="multiple">
+    <ToggleGroup type="multiple" defaultValue={data.map((pin) => pin.courseId)}>
       {data.map((pin) => {
         return <PinnedCoursesItem key={crypto.randomUUID()} course={pin} />;
       })}

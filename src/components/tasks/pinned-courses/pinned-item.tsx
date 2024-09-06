@@ -8,8 +8,9 @@ export default function PinnedCoursesItem({ course }: { course: PinnedType }) {
   return (
     <ToggleGroupItem
       variant={"outline"}
-      value="calculus"
+      value={course.courseId ?? ""}
       aria-label="Toggle Calculus"
+      defaultChecked={course.isPinned}
     >
       {course.courseName}
     </ToggleGroupItem>
