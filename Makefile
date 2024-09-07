@@ -15,3 +15,6 @@ lint:
 
 build:
 	pnpm build
+
+make clean:
+	rm -rf .next/
