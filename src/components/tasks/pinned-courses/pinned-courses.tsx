@@ -30,13 +30,10 @@ export default function PinnedCourses() {
     return toast.error("Unable to fetch pinned classes");
   }
 
-  console.log(active.data.map((active) => active.courseId));
+  const actives = active.data.map((active) => active.courseId);
 
   return (
-    <ToggleGroup
-      type="multiple"
-      defaultValue={active.data.map((active) => active.courseId)}
-    >
+    <ToggleGroup type="multiple" defaultValue={actives}>
       {pinned.data.map((pin) => {
         return <PinnedCoursesItem key={crypto.randomUUID()} course={pin} />;
       })}
