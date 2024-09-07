@@ -2,6 +2,8 @@
 import * as React from "react";
 import { Label, Pie, PieChart } from "recharts";
 
+import { trpc } from "@/server/client";
+
 import {
   Card,
   CardContent,
@@ -16,9 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-import { trpc } from "@/server/client";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Stats() {
   const handedIn = trpc.stats.getAllHandedInAssignments.useQuery(undefined, {
