@@ -31,8 +31,8 @@ export default function ClassPickerFilterItem({
       toast.error("Unable to toggle pin :(");
     },
     onSuccess() {
-      utils.pinned.pinned.invalidate();
       utils.courses.activeCourses.invalidate();
+      utils.pinned.invalidate();
     },
   });
 
@@ -41,8 +41,8 @@ export default function ClassPickerFilterItem({
       toast.error("Unable to toggle course :(");
     },
     onSuccess() {
-      utils.pinned.pinned.invalidate();
       utils.courses.activeCourses.invalidate();
+      utils.pinned.active.invalidate();
     },
   });
 

@@ -2,7 +2,7 @@ import { google } from "googleapis";
 import { toast } from "react-toastify";
 import { db } from "db";
 import { auth } from "auth";
-import { accounts, activeCourses } from "tables";
+import { accounts } from "tables";
 import { eq } from "drizzle-orm";
 
 import { authGoogle } from "@/core/utils/auth-google";
@@ -19,11 +19,6 @@ export default async function ClassPicker() {
   const { refresh_token } = (
     await db.select().from(accounts).where(eq(accounts.userId, session.user.id))
   )[0];
-
-  const active = await db
-    .select()
-    .from(activeCourses)
-    .where(eq(activeCourses.userId, session.user.id));
 
   // OAuth
   authGoogle(refresh_token);
