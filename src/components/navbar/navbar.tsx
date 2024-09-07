@@ -6,6 +6,7 @@ import { auth, signOut } from "auth";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 import BreadCrumbs from "@/components/breadcrumbs";
+import { greeting } from "@/core/utils/greeting";
 
 export default async function Navbar() {
   const session = await auth();
@@ -37,8 +38,8 @@ export default async function Navbar() {
 
           <div className="mr-auto flex flex-col gap-2 font-bold">
             <p>
-              Good Morning {session.user?.name?.split(" ")[0]}, your next class
-              is Calculus
+              {greeting(new Date())} {session.user?.name?.split(" ")[0]} 👋.
+              🫵🤓
             </p>
             <BreadCrumbs />
           </div>
