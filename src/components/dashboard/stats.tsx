@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/chart";
 
 import { trpc } from "@/server/client";
+import { Skeleton } from "../ui/skeleton";
 
 export default function Stats() {
   const handedIn = trpc.stats.getAllHandedInAssignments.useQuery(undefined, {
@@ -38,8 +39,12 @@ export default function Stats() {
     !notHandedIn.data
   ) {
     return (
-      <div className="min-h-96 flex-1 overflow-y-scroll bg-lightBlack">
-        <h2>Loading...</h2>
+      <div className="flex min-h-96 flex-1 flex-col items-center justify-center gap-2 rounded-sm bg-lightBlack">
+        <Skeleton className="h-6 w-[70%]" />
+        <Skeleton className="h-6 w-[50%]" />
+        <Skeleton className="aspect-square w-[35%] rounded-full" />
+        <Skeleton className="h-6 w-[20%]" />
+        <Skeleton className="h-6 w-[80%]" />
       </div>
     );
   }
