@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
+import Stats from "@/components/dashboard/stats";
 import Agenda from "@/components/dashboard/agenda";
-import DueSoon from "@/components/dashboard/due-soon";
 import ToDo from "@/components/dashboard/todo";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default async function Dashboard() {
   return (
     <div className="h-full w-full">
       <div className="flex w-full gap-4">
-        <DueSoon />
+        <Stats />
         <ToDo />
       </div>
 
