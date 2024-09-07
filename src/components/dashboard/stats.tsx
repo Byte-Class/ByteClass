@@ -20,11 +20,11 @@ import {
 import { trpc } from "@/server/client";
 
 export default function Stats() {
-  const handedIn = trpc.todo.getAllHandedInAssignments.useQuery(undefined, {
+  const handedIn = trpc.stats.getAllHandedInAssignments.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
 
-  const notHandedIn = trpc.todo.getAllNotHandedInAssignments.useQuery(
+  const notHandedIn = trpc.stats.getAllNotHandedInAssignments.useQuery(
     undefined,
     {
       refetchOnWindowFocus: false,
