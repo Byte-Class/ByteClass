@@ -8,9 +8,15 @@ import { ToggleGroup } from "@/components/ui/toggle-group";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PinnedCourses() {
-  const { data, isPending, isError } = trpc.pinned.pinned.useQuery();
+  const pinned = trpc.pinned.pinned.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
-  if (isPending) {
+  const active = trpc.pinned.active.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
+
+  if (pinned.isPending || active.isPending) {
     return (
       <div className="flex items-center justify-center gap-1">
         <Skeleton className="h-9 w-16" />
@@ -20,13 +26,18 @@ export default function PinnedCourses() {
     );
   }
 
-  if (isError || !data) {
+  if (pinned.isError || active.isError || !pinned.data || !active.data) {
     return toast.error("Unable to fetch pinned classes");
   }
 
+  console.log(active.data.map((active) => active.courseId));
+
   return (
-    <ToggleGroup type="multiple" defaultValue={data.map((pin) => pin.courseId)}>
-      {data.map((pin) => {
+    <ToggleGroup
+      type="multiple"
+      defaultValue={active.data.map((active) => active.courseId)}
+    >
+      {pinned.data.map((pin) => {
         return <PinnedCoursesItem key={crypto.randomUUID()} course={pin} />;
       })}
     </ToggleGroup>
