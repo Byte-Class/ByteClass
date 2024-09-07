@@ -99,7 +99,7 @@ function Chart({
   return (
     <Card className="flex h-full w-full flex-col bg-lightBlack">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Total Assignments</CardTitle>
+        <CardTitle className="text-2xl font-bold">Total Assignments</CardTitle>
         <CardDescription>All Time</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
