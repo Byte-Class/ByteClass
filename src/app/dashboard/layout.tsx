@@ -31,7 +31,7 @@ export default async function DashboardLayout({
         </SideBarWrapper>
 
         <Suspense fallback={<Loading />}>
-          <div className="min-h-[calc(100lvh-7rem)] flex-grow p-8">
+          <div className="min-h-[calc(100lvh-7rem)] w-[calc(100vw-20rem)] p-8">
             {children}
           </div>
         </Suspense>
