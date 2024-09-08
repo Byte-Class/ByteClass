@@ -5,6 +5,7 @@ import { tasks } from "./routers/tasks";
 import { pinned } from "./routers/pinned";
 import { courses } from "./routers/courses";
 import { stats } from "./routers/stats";
+import { todo } from "./routers/todo";
 
 export const appRouter = router({
   calendar,
@@ -13,6 +14,7 @@ export const appRouter = router({
   pinned,
   courses,
   stats,
+  todo,
 });
 
 export type AppRouter = typeof appRouter;
